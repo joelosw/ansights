@@ -1,3 +1,3 @@
-[submodule "Reichsanzeiger"]
+[submodule "Reichsanzeiger-Repo"]
 	path = Reichsanzeiger-Repo
 	url = https://github.com/UB-Mannheim/Reichsanzeiger.git
