@@ -3,20 +3,28 @@
 # Setup The Repo
 1. Clone this repo
 2. 
-```
-git submodule update --init --recursive
-```
-3. Create a venv/ conda env and enter it
-4. 
-```
-python -m pip install -r requirements.txt
-```
+    ```
+    git submodule update --init --recursive
+    ```
+3. 
+    Change your Name/Passwd in [config/sql_credentials.txt](config/sql_credentials.txt) and execute
+    ``` bash
+    git update-index --assume-unchanged config/sql_credentials.txt
+    ```
+    so that they are not tracked and uploaded to GitHub 
 
 
-Get the SQL Database:
+4. Create a venv/ conda env and enter it
+5. 
+    ```
+    python -m pip install -r requirements.txt
+    ```
+
+
+## Get the SQL Database:
 1. Install MariaDB \[[Windows](https://www.mariadbtutorial.com/getting-started/install-mariadb/) | [Arch](https://wiki.archlinux.org/title/MariaDB)\]
 
-## Using Linux:
+### Using Linux:
 ``` bash
 mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 sudo systemctl start mariadb.service
