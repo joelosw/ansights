@@ -32,7 +32,7 @@ sudo mysql -u root -p
 ```
 Using the MariaDB CLI
 ```
-CREATE DATABASE reichsanzeiger
+CREATE DATABASE reichsanzeiger;
 ``` 
 Then exit, go back to terminal and import data:
 ``` bash
@@ -41,7 +41,7 @@ sudo mysql -u root -p reichsanzeiger < Reichsanzeiger-Repo/reichsanzeiger.sql
 2. Setting up a new user with password
 ``` bash
 CREATE USER 'NAME'@'localhost' IDENTIFIED BY 'PASSWORD';
-GRANT ALL PRIVILEGES ON reichsanzeiger.* TO 'joel'@'localhost';
+GRANT ALL PRIVILEGES ON reichsanzeiger.* TO 'NAME'@'localhost';
 FLUSH PRIVILEGES;
 quit;
 ```
