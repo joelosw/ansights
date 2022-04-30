@@ -1,1 +1,1 @@
-from Newspaper import 
+from Newspaper import
