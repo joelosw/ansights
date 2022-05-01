@@ -17,7 +17,7 @@
 4. Create a venv/ conda env and enter it
 5. 
     ```
-    python -m pip install -r requirements.txt
+    python3 -m pip install -r requirements.txt
     ```
 
 
