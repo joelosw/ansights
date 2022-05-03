@@ -1,4 +1,4 @@
-[Description of the Dataset on the Coding daVinci Website](https://codingdavinci.de/daten/deutscher-reichsanzeiger-und-preussischer-staatsanzeige)
+[Description of the Dataset on the Coding daVinci Website](https://codingdavinci.de/daten/deutscher-reichsanzeiger-und-preussischer-staatsanzeiger)
 
 # Setup The Repo
 1. Clone this repo
