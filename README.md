@@ -1,4 +1,4 @@
-[Description of the Dataset on the Coding daVinci Website](https://codingdavinci.de/daten/deutscher-reichsanzeiger-und-preussischer-staatsanzeige)
+[Description of the Dataset on the Coding daVinci Website](https://codingdavinci.de/daten/deutscher-reichsanzeiger-und-preussischer-staatsanzeiger)
 
 # Setup The Repo
 1. Clone this repo
@@ -17,7 +17,7 @@
 4. Create a venv/ conda env and enter it
 5. 
     ```
-    python -m pip install -r requirements.txt
+    python3 -m pip install -r requirements.txt
     ```
 
 

@@ -2,3 +2,5 @@ davinci-env
 davinci-env2
 config/sql_credentials.txt
 **/__pycache__/**
+venv_daVinci
+
