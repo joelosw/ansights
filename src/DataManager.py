@@ -17,4 +17,4 @@ def get_data(film_id: str, image_id: str, debug=False):
 
     return data
 
-#get_data(film_id='001-7920', image_id='0005')
+#get_data(film_id='001-7920', image_id='0005');

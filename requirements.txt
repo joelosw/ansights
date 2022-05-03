@@ -1,2 +1,5 @@
 mysql-connector-python
 configparser
+requests
+bs4
+lxml

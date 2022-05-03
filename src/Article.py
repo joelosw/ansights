@@ -20,5 +20,5 @@ class Article:
     def set_content(self, new_content: str):
         self.content = new_content
 
-    def __eq__(self, o: Article):
+    def __eq__(self, o: 'Article'):
         return o.film_id == self.film_id and o.file_name == self.file_name
