@@ -20,6 +20,10 @@
     python3 -m pip install -r requirements.txt
     ```
 
+## Using NER with Spacy:
+```
+python -m spacy download de_core_news_md
+```
 
 ## Get the SQL Database:
 1. Install MariaDB \[[Windows](https://www.mariadbtutorial.com/getting-started/install-mariadb/) | [Arch](https://wiki.archlinux.org/title/MariaDB)\]

@@ -3,3 +3,4 @@ configparser
 requests
 bs4
 lxml
+spacy
