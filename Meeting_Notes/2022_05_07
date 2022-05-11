@@ -1,0 +1,19 @@
+Visual Anzeights - Kick Off 
+
+Arbeitstermin: donnerstags, 14:30 bis 18:00 Uhr
+
+Pitch:
+Wir wollen Dokumente automatisiert in einen Kontext setzen. 
+Dies soll beispielhaft an dem Datensatz "Flug- und Extrablätter aus der Revolutionszeit 1918 bis 1920§" gezeigt werden. 
+Diese werden in einem ersten Schritt nach Stichworten ausgewertet. 
+Als zweites werden diese Stichpunkte in der GND Datenbank gesucht und erweitert.
+Daraufhin wird der Reichsanzeiger an Hand der zuvor identifizierten Schlagworte durchsucht und passende Artikel, sowie Ausgaben herausgefiltert.
+Diese Verknüpfungen können dann für das jeweilige Dokument, in diesem Falle das jeweilige Flugblatt, angezeigt werden.
+
+Hier ein Beispiel: 
+Ein Flugblatt, welches aus dem Jahre 1919 stammt und einen Aufruf der Spartakisten enthält, sich nicht mobilisieren zu lassen für jedwede Art von Bürgerwehr.
+Daraus ergeben sich folgende Stichworte: SPartakisten, Stuttgart, 1919
+Durchsucht man danach die GND Datenbank stellt sich heraus: Karl Fraaß ist der Verleger der Spartakisten in Stuttgart und arbeitet für den Berend Verlag.
+Somit konnte das Flugblatt bereits einem Verleger zugeordnet werden. 
+Im letzten Schritt wurde der Reichsanzeiger nach Begriffen wie SPartakisten und 1919 durchsucht, leider vergebens. Es findet sich keine Erwähnung der Stuttgarter Spartakisten.
+So schließen wir, dass es sich wohl eher um eine lokales Flugblatt handelt und wenig relevanz im nationalgeschichtlichen Kontext hat.
