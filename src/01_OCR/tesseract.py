@@ -1,3 +1,4 @@
+# Imports
 from PIL import Image
 from cleantext import clean
 from spellchecker import SpellChecker
@@ -57,10 +58,10 @@ def enhance_text(spell, text_cleaned, debug=False):
 
     print(text_preprrocessed)
 
-def get_text_dict(languages=['deu', 'deu_frak'], debug=False):
+def get_text_dict(languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=False):
     text_strings = {}
     for lang in languages:
-        text = get_string(IMAGE_PATH=TEST_PATH, lang=lang,debug=debug)
+        text = get_string(IMAGE_PATH=IMAGE_PATH, lang=lang,debug=debug)
         text_cleaned = clean_text(text)
         spell = init_SpellChecker()
         text_preprocessed = enhance_text(spell=spell, text_cleaned=text_cleaned, debug=debug)
@@ -69,4 +70,4 @@ def get_text_dict(languages=['deu', 'deu_frak'], debug=False):
     return text_strings
 
 if __name__ == '__main__':
-    get_text_dict(languages=['deu', 'deu_frak'], debug=False)
+    get_text_dict(languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=False)
