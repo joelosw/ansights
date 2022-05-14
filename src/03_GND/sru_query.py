@@ -17,6 +17,7 @@ from lxml import etree
 # gewünschtes Format der SRU-Antwort: &recordSchema=MARC21-xml
 
 # https://github.com/deutsche-nationalbibliothek/dnblab/blob/main/DNB_SRU_Tutorial.ipynb
+
 def dnb_sru(query :str, 
     sru_server = 'https://services.dnb.de/sru/', 
     catalog = 'authorities',
