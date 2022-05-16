@@ -5,4 +5,5 @@ config/sql_credentials.txt
 venv_daVinci
 tesseract
 tessdata
+.DS_Store
 

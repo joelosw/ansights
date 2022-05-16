@@ -8,17 +8,18 @@ if True:
     from src.utils.__RepoPath__ import repo_path
 nlp = spacy.load("de_core_news_md")
 
-with open(os.path.join(repo_path, 'data', 'example_flyer.txt'), 'r') as f:
+with open(os.path.join(repo_path, 'data', 'arbeiter_aufruf_OCR.txt'), 'r') as f:
     text = f.read()
 analyzed = nlp(text)
 for word in analyzed.ents:
     print(word.text, word.label_)
 for token in analyzed:
-    if token.pos in [92, 96]:
+    if True or token.pos in [92, 96]:
+        pass
         print(
-            f'| {token.text} \t {"\t"} | {token.pos_} \t | {token.pos} \t | {token.tag_}')
+            f'| {token.text} \t | {token.pos_} \t | {token.pos} \t | {token.tag_}')
 
-# displacy.serve(analyzed)
+displacy.serve(analyzed)
 # print("======= NOW ENGLISH==========")
 # nlp_eng = spacy.load("en_core_web_trf")
 # with open(os.path.join(repo_path, 'data', 'example_flyer_english.txt'), 'r') as f:

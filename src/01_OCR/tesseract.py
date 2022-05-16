@@ -8,7 +8,7 @@ import pytesseract
 
 # 'data/2013_0473_031__ansicht03.tif'
 # 'data/2013_0473_029__ansicht01.tif'
-TEST_PATH = 'data/2013_0473_031__ansicht03.tif'
+TEST_PATH = 'data/2013_0473_023__ansicht01.tif'
 
 # If you don't have tesseract executable in your PATH, include the following:
 # pytesseract.pytesseract.tesseract_cmd = r'tesseract'
@@ -70,4 +70,4 @@ def get_text_dict(languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=Fal
     return text_strings
 
 if __name__ == '__main__':
-    get_text_dict(languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=False)
+    print(get_text_dict(languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=False))

@@ -5,3 +5,7 @@ bs4
 lxml
 spacy
 html2text
+pandas
+cleantext
+pyspellchecker
+textblob
