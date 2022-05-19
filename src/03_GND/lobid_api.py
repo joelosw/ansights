@@ -1,9 +1,4 @@
-# incoming list with keywords with entitys
-
-# return dictionary with keywords as keys and values with related subclass, subcategory, etc. 
-
-# Example Arbeiter FILTER SCHLAGWORTE UND DEUTSCHLAND
-
+# Imports
 import requests
 import pandas as pd
 
@@ -131,5 +126,5 @@ def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, ve
 
 
 # TEST
-keys=['Streik']
-df=get_gnd_keywordRelations(keywords=keys, max_items=10, print_output=True, verbose=False)
+keys=['Goethe']
+df=get_gnd_keywordRelations(keywords=keys, max_items=10, print_output=True, verbose=False, remove_double=True)
