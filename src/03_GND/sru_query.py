@@ -17,6 +17,7 @@ from lxml import etree
 # gewünschtes Format der SRU-Antwort: &recordSchema=MARC21-xml
 
 # https://github.com/deutsche-nationalbibliothek/dnblab/blob/main/DNB_SRU_Tutorial.ipynb
+# https://wiki.dnb.de/pages/viewpage.action?pageId=134055670
 
 
 def dnb_sru(query: str,
@@ -124,12 +125,13 @@ def get_gnd_record(query: str,
     return df
 
 
-df = get_gnd_record(query='tit=Betrieb',
+df = get_gnd_record(query='Streik%3D1919', # 'Goethe', 
                     sru_server='https://services.dnb.de/sru/',
-                    catalog='dnb',
+                    catalog='dnb', # 'authorities', 'dnb'
                     recordSchema='MARC21-xml',
                     operation='searchRetrieve',
                     version='1.1',
                     maximumRecords=25,
-                    debug=False)
+                    debug=True)
 print(df.head())
+

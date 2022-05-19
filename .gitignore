@@ -6,4 +6,5 @@ venv_daVinci
 tesseract
 tessdata
 .DS_Store
+.vscode
 
