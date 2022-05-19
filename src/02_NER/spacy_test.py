@@ -8,13 +8,13 @@ if True:
     from src.utils.__RepoPath__ import repo_path
 nlp = spacy.load("de_core_news_md")
 
-with open(os.path.join(repo_path, 'data', 'arbeiter_aufruf_OCR.txt'), 'r') as f:
+with open(os.path.join(repo_path, 'data', 'arbeiter_aufruf_OCR_uncleaned.txt'), 'r') as f:
     text = f.read()
 analyzed = nlp(text)
 for word in analyzed.ents:
     print(word.text, word.label_)
 for token in analyzed:
-    if True or token.pos in [92, 96]:
+    if token.pos in [92, 96, 100]:
         pass
         print(
             f'| {token.text} \t | {token.pos_} \t | {token.pos} \t | {token.tag_}')
