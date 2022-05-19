@@ -34,10 +34,10 @@ def get_gnd_json(query: str, lobid_server='https://lobid.org/', catalog='gnd/sea
 
 
 def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, verbose=True, 
-                             remove_double=True, json_keys=['relatedTerm', 'gndSubjectCategory', 
-                                                            'relatedPlaceOrGeographicName',
-                                                            'preferredName','broaderTermInstantial',
-                                                            'broaderTermGeneral', 'variantName']):
+                             remove_duplicates=True, json_keys=['relatedTerm', 'gndSubjectCategory', 
+                                                                'relatedPlaceOrGeographicName',
+                                                                'preferredName','broaderTermInstantial',
+                                                                'broaderTermGeneral', 'variantName']):
     
     """
         The get_gnd_keywordRelations function accepts keywords and keys as arguments and 
@@ -113,7 +113,7 @@ def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, ve
                             if verbose:
                                 print(f'Member {item+1} of kewyowrd "{keyword}" has no {json_key}.')
         
-                if remove_double:
+                if remove_duplicates:
                     df[keyword][0][json_key]=list(dict.fromkeys(df[keyword][0][json_key]))
 
 
@@ -126,5 +126,5 @@ def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, ve
 
 
 # TEST
-keys=['Goethe']
-df=get_gnd_keywordRelations(keywords=keys, max_items=10, print_output=True, verbose=False, remove_double=True)
+keys=['Streik']
+df=get_gnd_keywordRelations(keywords=keys, max_items=10, print_output=True, verbose=False, remove_duplicates=True)
