@@ -2,6 +2,9 @@
 import requests
 import pandas as pd
 
+from collections import Counter
+from statistics import mode
+
 
 def get_gnd_json(query: str, lobid_server='https://lobid.org/', catalog='gnd/search', 
                  filter='+(type:SubjectHeading)', verbose=False):
@@ -33,11 +36,11 @@ def get_gnd_json(query: str, lobid_server='https://lobid.org/', catalog='gnd/sea
     return json_query
 
 
-def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, verbose=True, 
-                             remove_duplicates=True, json_keys=['relatedTerm', 'gndSubjectCategory', 
-                                                                'relatedPlaceOrGeographicName',
-                                                                'preferredName','broaderTermInstantial',
-                                                                'broaderTermGeneral', 'variantName']):
+def get_gnd_keywordRelations(keywords :list, max_query_items=10, print_output=True, verbose=True, as_list=True, 
+                             max_keyword_relations=3, remove_duplicates=True, 
+                             json_keys=['relatedTerm', 'gndSubjectCategory', 'relatedPlaceOrGeographicName',
+                                        'preferredName','broaderTermInstantial', 'broaderTermGeneral', 
+                                        'variantName']):
     
     """
         The get_gnd_keywordRelations function accepts keywords and keys as arguments and 
@@ -60,12 +63,12 @@ def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, ve
         json_query = get_gnd_json(query=keyword)
         
         try:
-            total_items=json_query['totalItems']
+            total_items=len(json_query['member'])
         except:
             print(f'No items for keyword "{keyword}".')
             continue
 
-        n_items = min(total_items, max_items)
+        n_items = min(total_items, max_query_items)
         df[keyword] = [{json_key: list() for json_key in json_keys}]
 
         for item in range(n_items):
@@ -113,8 +116,14 @@ def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, ve
                             if verbose:
                                 print(f'Member {item+1} of kewyowrd "{keyword}" has no {json_key}.')
         
-                if remove_duplicates:
+                if not as_list and remove_duplicates:
                     df[keyword][0][json_key]=list(dict.fromkeys(df[keyword][0][json_key]))
+
+        if as_list:
+            keyword_relation_list = get_relevant_relations_as_list(df[keyword][0], keyword=keyword,
+                                                         verbose=verbose, 
+                                                         max_keyword_relations=max_keyword_relations)
+            df[keyword][0] = keyword_relation_list
 
 
         if print_output:
@@ -125,6 +134,43 @@ def get_gnd_keywordRelations(keywords :list, max_items=10, print_output=True, ve
     return df
 
 
+def get_relevant_relations_as_list(df :dict, keyword :str, verbose=False, max_keyword_relations=3):
+    """
+        The get_relevant_relations_as_list function accepts a dictionary with all related words and transforms 
+        it to a single list with the most common words.
+
+        :param df :dict: Used to pass the dictionary for each keyword.
+        :param keyword: Used to pass keyword of our query.
+        :param max_keyword_relations=3: Used to define the maximal number of words of the outputted list.
+        :param verbose=False: Used to print out relevant information for debugging.
+        :return: A list.
+    """
+
+    keyword_relation_list = []
+
+    # Convert dictionary to simple list
+    for key, relation_list in df.items():
+        
+        for word in relation_list:
+            if word != keyword:
+                keyword_relation_list.append(word)
+
+    freq_words = []
+
+    # Detect most frequent words in list
+    for i in range(max_keyword_relations):
+        freq_word = str(mode(keyword_relation_list))
+        freq_words.append(freq_word)
+        keyword_relation_list = [word for word in keyword_relation_list if word != freq_word]
+
+    keyword_relation_list=[word for word in freq_words]
+
+    if verbose:
+        print('keyword_relation_list:', keyword_relation_list)
+
+    return keyword_relation_list
+
 # TEST
 keys=['Streik']
-df=get_gnd_keywordRelations(keywords=keys, max_items=10, print_output=True, verbose=False, remove_duplicates=True)
+df=get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=True, verbose=False, 
+                            max_keyword_relations=3)
