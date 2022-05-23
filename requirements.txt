@@ -9,3 +9,5 @@ pandas
 cleantext
 pyspellchecker
 textblob
+tqdm
+yake
