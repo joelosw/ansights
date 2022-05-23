@@ -21,4 +21,4 @@ custom_kw_extractor = yake.KeywordExtractor(
 def extract_keyword_score(text, th=0.7):
     keywords = custom_kw_extractor.extract_keywords(text)
     keywords.sort(key=lambda x: x[1], reverse=False)
-    return keywords.filter(key=lambda x: x[1] < th)
+    return filter(lambda x: x[1] < th, keywords)
