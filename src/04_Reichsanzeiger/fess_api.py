@@ -11,7 +11,14 @@ example_query = "Spartakus Stuttgart 1919"
 
 
 def query_reichsanzeiger(query_terms: Union[str, Iterable[str]]):
-    query_terms = query_terms.replace(' ', '+')
+    # If query_terms is of type list:
+    if isinstance(query_terms, list) or isinstance(query_terms, tuple):
+        query_terms = '+'.join(query_terms)
+    elif isinstance(query_terms, str):
+        query_terms = query_terms.replace(' ', '+')
+    else:  # otherwise
+        raise Exception(
+            "Call can only handle list of keywords or string with space-seperated keywords")
     print(f'Calling {base_url + query_terms + tesseract5_label}')
     response = requests.get(base_url + query_terms + tesseract5_label)
     return response.json()
@@ -41,10 +48,34 @@ def remove_unuseful_fields(results: Iterable[JSON]) -> Iterable[JSON]:
     return results
 
 
-result_json = query_reichsanzeiger(example_query)['response']
-print(
-    f'Got {result_json["record_count"]} results for query: {result_json["search_query"]}')
-results = result_json['result']
+def query_and_process(query_term: str, add_text: bool = False):
+    result_json = query_reichsanzeiger(query_term)['response']
+    results = result_json['result']
+    results = add_date_to_results(remove_unuseful_fields(results))
+    if add_text:
+        results = add_text_to_results(results)
+    return results
 
-results = add_text_to_results(
-    add_date_to_results(remove_unuseful_fields(results)))
+
+def count_for_query(query_term: str):
+    result_json = query_reichsanzeiger(query_term)['response']
+    print(result_json.keys())
+    return result_json['record_count']
+
+
+def urls_from_query(query_term: str):
+    result_json = query_reichsanzeiger(query_term)['response']
+    urls = []
+    for result in result_json['result']:
+        urls.append(result['url'])
+    return urls
+
+
+if __name__ == '__main__':
+    result_json = query_reichsanzeiger(example_query)['response']
+    print(
+        f'Got {result_json["record_count"]} results for query: {result_json["search_query"]}')
+    results = result_json['result']
+
+    results = add_text_to_results(
+        add_date_to_results(remove_unuseful_fields(results)))
