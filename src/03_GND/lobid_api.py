@@ -2,8 +2,7 @@
 import requests
 import pandas as pd
 
-from collections import Counter
-from statistics import mode
+from collections import defaultdict
 
 
 def get_gnd_json(query: str, lobid_server='https://lobid.org/', catalog='gnd/search', 
@@ -156,12 +155,17 @@ def get_relevant_relations_as_list(df :dict, keyword :str, verbose=False, max_ke
                 keyword_relation_list.append(word)
 
     freq_words = []
+    temp = defaultdict(int)
 
     # Detect most frequent words in list
     for i in range(max_keyword_relations):
-        freq_word = str(mode(keyword_relation_list))
-        freq_words.append(freq_word)
-        keyword_relation_list = [word for word in keyword_relation_list if word != freq_word]
+        for rel_word in keyword_relation_list:
+            temp[rel_word] += 1
+        
+        # getting max frequency
+        res = max(temp, key=temp.get)
+        freq_words.append(res)
+        keyword_relation_list=[word for word in keyword_relation_list if word != res]
 
     keyword_relation_list=[word for word in freq_words]
 
@@ -171,6 +175,8 @@ def get_relevant_relations_as_list(df :dict, keyword :str, verbose=False, max_ke
     return keyword_relation_list
 
 # TEST
-keys=['Streik']
-df=get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=True, verbose=False, 
+keys=['Streik', 'Aufstand', 'Weltkrieg']
+df=get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=False, verbose=False, 
                             max_keyword_relations=3)
+
+print(df)
