@@ -1,14 +1,20 @@
 # Imports
+import pytesseract
 from PIL import Image
 from cleantext import clean
 from spellchecker import SpellChecker
 from textblob import TextBlob
+import sys
+import os
+sys.path.append('./')
+print(sys.path)
+if True:
+    from src.utils.__RepoPath__ import repo_path
 
-import pytesseract
 
 # 'data/2013_0473_031__ansicht03.tif'
 # 'data/2013_0473_029__ansicht01.tif'
-TEST_PATH = 'data/2013_0473_023__ansicht01.tif'
+TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 
 # If you don't have tesseract executable in your PATH, include the following:
 # pytesseract.pytesseract.tesseract_cmd = r'tesseract'
