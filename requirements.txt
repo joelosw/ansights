@@ -11,3 +11,4 @@ pyspellchecker
 textblob
 tqdm
 yake
+pillow
