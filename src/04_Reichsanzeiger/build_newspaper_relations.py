@@ -94,7 +94,11 @@ def build_relations(all_keywords: list):
 
 
 if __name__ == '__main__':
-    example_query = "Spartakus Stuttgart 1919 Karlsruhe".split(
-        " ")
+    example_query = ['Arbeiter', 'Funktionen', 'Religionszugehörigkeit', 'Tätigkeiten', 'Einzelne Berufe'
+    'Arbeitgeber', 'Arbeitsgestaltung', 'Personalpolitik', 'Arbeit'
+    'Gasarbeiter', 'Betriebe', 'Unternehmen', 'Agrarpolitik'
+    'auszumachen', 'streiken']
+    # example_query = "Spartakus Stuttgart 1919 Karlsruhe".split(
+    #     " ")
     print(binary_search_number_of_keywords(example_query))
     print(build_relations(example_query))

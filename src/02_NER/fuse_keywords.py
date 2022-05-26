@@ -63,9 +63,9 @@ def fuse(text: str, max_nouns: int = None, max_verbs: int = None):
             else:
                 ner_logger.warning(
                     f'Could only get {num_prop + num_nouns} nouns of the wanted {max_nouns}')
-        words_with_scores = words_with_scores | dict(candidates)
+        words_with_scores = {**words_with_scores, **dict(candidates)}
     else:
-        words_with_scores = words_with_scores | dict(prop_nouns) | dict(nouns)
+        words_with_scores ={**words_with_scores, **dict(prop_nouns), **dict(nouns)}
 
     if max_verbs:
         verbs.sort(key=lambda x: x[1], reverse=False)
@@ -77,9 +77,9 @@ def fuse(text: str, max_nouns: int = None, max_verbs: int = None):
             else:
                 ner_logger.warning(
                     f'Could only get {num_verbs} verbs of the wanted {max_verbs}')
-        words_with_scores = words_with_scores | dict(candidates)
+        words_with_scores = {**words_with_scores, **dict(candidates)}
     else:
-        words_with_scores = words_with_scores | dict(verbs)
+        words_with_scores = {**words_with_scores, **dict(verbs)}
     return words_with_scores
 
 

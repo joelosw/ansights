@@ -157,20 +157,25 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
             if word != keyword:
                 keyword_relation_list.append(word)
 
-    freq_words = []
+    freq_words = set()
     temp = defaultdict(int)
 
     # Detect most frequent words in list
     for i in range(max_keyword_relations):
         for rel_word in keyword_relation_list:
             temp[rel_word] += 1
-        
-        # getting max frequency
-        res = max(temp, key=temp.get)
-        freq_words.append(res)
-        keyword_relation_list=[word for word in keyword_relation_list if word != res]
 
-    keyword_relation_list = [word for word in freq_words]
+        # getting max frequency
+        try:
+            freq_word = max(temp, key=temp.get)
+        except ValueError:
+            freq_word = None
+
+        freq_words.add(freq_word)
+        keyword_relation_list = [
+            word for word in keyword_relation_list if word != freq_word]
+
+    keyword_relation_list = freq_words.copy()
 
     if verbose:
         print('keyword_relation_list:', keyword_relation_list)
@@ -179,8 +184,10 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
 
 
 # TEST
-keys=['Streik', 'Aufstand', 'Weltkrieg']
-df=get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=False, verbose=False, 
-                            max_keyword_relations=3)
+keys = ['Arbeiter', 'Arbeitgeber', 'Gasarbeiter',
+        'Betriebe', 'auszumachen', 'streiken']
+df = get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=False, verbose=False,
+                              max_keyword_relations=3)
 
-print(df)
+[print(f'{df.columns[i]} : {df.iloc[0,i]}') for i in range(df.shape[1])]
+print(df.shape)
