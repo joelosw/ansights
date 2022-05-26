@@ -13,7 +13,7 @@ console.setFormatter(formatter)
 fess_logger.addHandler(console)
 
 
-class Newspaper:
+class News_Page:
     keywords: set = set()
     url: str
 
@@ -74,7 +74,7 @@ def binary_search_number_of_keywords(all_keywords: list, lowest=1, highest=None,
 
 def build_relations(all_keywords: list):
     number_with_results = binary_search_number_of_keywords(all_keywords)
-    newspapers = dict()
+    news_page = dict()
     combs = combinations(all_keywords, number_with_results)
     combs_length = sum(1 for _ in combs)
     fess_logger.info(f'Trying out {combs_length} combinations')
@@ -85,17 +85,16 @@ def build_relations(all_keywords: list):
             f'Found {result_json["record_count"]} for {query_sample}')
         for result in result_json['result']:
             current_url = result['url']
-            if current_url not in newspapers.keys():
-                newspapers[current_url] = Newspaper(current_url, query_sample)
+            if current_url not in news_page.keys():
+                news_page[current_url] = News_Page(current_url, query_sample)
             else:
-                newspapers[current_url].add_keywords(query_sample)
-    fess_logger.debug(f'Created dict for {len(newspapers)} scanned pages')
-    return newspapers
+                news_page[current_url].add_keywords(query_sample)
+    fess_logger.debug(f'Created dict for {len(news_page)} scanned pages')
+    return news_page
 
 
 if __name__ == '__main__':
     example_query = "Spartakus Stuttgart 1919 Karlsruhe".split(
         " ")
-    print(binary_search_number_of_keywords(
-        example_query))
+    print(binary_search_number_of_keywords(example_query))
     print(build_relations(example_query))
