@@ -34,6 +34,11 @@ class Newspaper:
     def common_keywords(self, other):
         return self.keywords.intersection(other.keywords)
 
+    def __str__(self) -> str:
+        return f'\n ========== \n Newspaper Page  from URL: \n {self.url} with keywords {self.keywords} ====== \n'
+
+    def __repr__(self) -> str:
+        return self.__str__()
 # First step, binary search at how many keywords we get results (presumably none if we throw in all keywords, and too many if we throw in 1 kw)
 
 
@@ -89,7 +94,7 @@ def build_relations(all_keywords: list):
 
 
 if __name__ == '__main__':
-    example_query = "Spartakus Stuttgart 1919 streik gasarbeiter blibla blup das ist mir so egal ich teste nur die Suche".split(
+    example_query = "Spartakus Stuttgart 1919 Karlsruhe".split(
         " ")
     print(binary_search_number_of_keywords(
         example_query))
