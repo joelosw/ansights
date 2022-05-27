@@ -1,0 +1,131 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-network@latest/styles/vis-network.css" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@latest/dist/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+        #config {
+            float: left;
+            width: 400px;
+            height: 600px;
+        }
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<div id = "config"></div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "id": "News_Page 1", "label": "News_Page 1", "shape": "dot", "title": "News_Page 1: https:"}, {"font": {"color": "white"}, "id": "News_Page 2", "label": "News_Page 2", "shape": "dot", "title": "News_Page 2: https:"}, {"font": {"color": "white"}, "id": "News_Page 3", "label": "News_Page 3", "shape": "dot", "title": "News_Page 3: https:"}, {"font": {"color": "white"}, "id": "News_Page 4", "label": "News_Page 4", "shape": "dot", "title": "News_Page 4: https:"}, {"font": {"color": "white"}, "id": "News_Page 5", "label": "News_Page 5", "shape": "dot", "title": "News_Page 5: https:"}, {"font": {"color": "white"}, "id": "News_Page 6", "label": "News_Page 6", "shape": "dot", "title": "News_Page 6: https:"}, {"font": {"color": "white"}, "id": "News_Page 7", "label": "News_Page 7", "shape": "dot", "title": "News_Page 7: https:"}, {"font": {"color": "white"}, "id": "News_Page 8", "label": "News_Page 8", "shape": "dot", "title": "News_Page 8: https:"}, {"font": {"color": "white"}, "id": "News_Page 11", "label": "News_Page 11", "shape": "dot", "title": "News_Page 11: https:"}, {"font": {"color": "white"}, "id": "News_Page 13", "label": "News_Page 13", "shape": "dot", "title": "News_Page 13: https:"}, {"font": {"color": "white"}, "id": "News_Page 15", "label": "News_Page 15", "shape": "dot", "title": "News_Page 15: https:"}, {"font": {"color": "white"}, "id": "News_Page 16", "label": "News_Page 16", "shape": "dot", "title": "News_Page 16: https:"}, {"font": {"color": "white"}, "id": "News_Page 17", "label": "News_Page 17", "shape": "dot", "title": "News_Page 17: https:"}, {"font": {"color": "white"}, "id": "News_Page 18", "label": "News_Page 18", "shape": "dot", "title": "News_Page 18: https:"}, {"font": {"color": "white"}, "id": "News_Page 19", "label": "News_Page 19", "shape": "dot", "title": "News_Page 19: https:"}, {"font": {"color": "white"}, "id": "News_Page 20", "label": "News_Page 20", "shape": "dot", "title": "News_Page 20: https:"}, {"font": {"color": "white"}, "id": "News_Page 14", "label": "News_Page 14", "shape": "dot", "title": "News_Page 14: https:"}, {"font": {"color": "white"}, "id": "News_Page 10", "label": "News_Page 10", "shape": "dot", "title": "News_Page 10: https:"}, {"font": {"color": "white"}, "id": "News_Page 12", "label": "News_Page 12", "shape": "dot", "title": "News_Page 12: https:"}, {"font": {"color": "white"}, "id": "News_Page 9", "label": "News_Page 9", "shape": "dot", "title": "News_Page 9: https:"}]);
+        edges = new vis.DataSet([{"from": "News_Page 1", "to": "News_Page 2", "value": 0.23280682260803887}, {"from": "News_Page 1", "to": "News_Page 3", "value": 0.32933836195710414}, {"from": "News_Page 1", "to": "News_Page 4", "value": 0.4949059284855781}, {"from": "News_Page 1", "to": "News_Page 5", "value": 0.40884206485611596}, {"from": "News_Page 1", "to": "News_Page 6", "value": 0.1820624218027074}, {"from": "News_Page 1", "to": "News_Page 7", "value": 0.05751296267265431}, {"from": "News_Page 1", "to": "News_Page 8", "value": 0.17296367246950056}, {"from": "News_Page 1", "to": "News_Page 11", "value": 0.08409141474914572}, {"from": "News_Page 1", "to": "News_Page 13", "value": 0.10197832996090289}, {"from": "News_Page 1", "to": "News_Page 15", "value": 0.2461942946388969}, {"from": "News_Page 1", "to": "News_Page 16", "value": 0.09713717386774873}, {"from": "News_Page 1", "to": "News_Page 17", "value": 0.05959282833297596}, {"from": "News_Page 1", "to": "News_Page 18", "value": 0.14761449035414612}, {"from": "News_Page 1", "to": "News_Page 19", "value": 0.05602875164349628}, {"from": "News_Page 1", "to": "News_Page 20", "value": 0.21648254275402812}, {"from": "News_Page 2", "to": "News_Page 3", "value": 0.27361399311983453}, {"from": "News_Page 2", "to": "News_Page 4", "value": 0.20176080499789453}, {"from": "News_Page 2", "to": "News_Page 5", "value": 0.20910777444344494}, {"from": "News_Page 2", "to": "News_Page 6", "value": 0.20131834551506445}, {"from": "News_Page 2", "to": "News_Page 7", "value": 0.34673165926172067}, {"from": "News_Page 2", "to": "News_Page 14", "value": 0.19667077491251334}, {"from": "News_Page 2", "to": "News_Page 15", "value": 0.08109076494324127}, {"from": "News_Page 2", "to": "News_Page 16", "value": 0.10596004963154905}, {"from": "News_Page 2", "to": "News_Page 18", "value": 0.06378408165189069}, {"from": "News_Page 2", "to": "News_Page 19", "value": 0.20876223493339982}, {"from": "News_Page 2", "to": "News_Page 20", "value": 0.08570484370474285}, {"from": "News_Page 3", "to": "News_Page 4", "value": 0.2854193544706659}, {"from": "News_Page 3", "to": "News_Page 5", "value": 0.2958126876876234}, {"from": "News_Page 3", "to": "News_Page 6", "value": 0.21397494140614706}, {"from": "News_Page 3", "to": "News_Page 7", "value": 0.12533074475378134}, {"from": "News_Page 3", "to": "News_Page 8", "value": 0.07707279059681266}, {"from": "News_Page 3", "to": "News_Page 13", "value": 0.07378517639139331}, {"from": "News_Page 3", "to": "News_Page 15", "value": 0.13578422127913298}, {"from": "News_Page 3", "to": "News_Page 16", "value": 0.08871357198312724}, {"from": "News_Page 3", "to": "News_Page 18", "value": 0.10680466343077055}, {"from": "News_Page 3", "to": "News_Page 19", "value": 0.05883984687963419}, {"from": "News_Page 3", "to": "News_Page 20", "value": 0.10952127216469434}, {"from": "News_Page 4", "to": "News_Page 5", "value": 0.354320819288236}, {"from": "News_Page 4", "to": "News_Page 6", "value": 0.15778343766421932}, {"from": "News_Page 4", "to": "News_Page 8", "value": 0.14989805454109398}, {"from": "News_Page 4", "to": "News_Page 11", "value": 0.07287738109705043}, {"from": "News_Page 4", "to": "News_Page 13", "value": 0.08837898183032977}, {"from": "News_Page 4", "to": "News_Page 15", "value": 0.21336298702835982}, {"from": "News_Page 4", "to": "News_Page 16", "value": 0.08418341943429233}, {"from": "News_Page 4", "to": "News_Page 17", "value": 0.051645810384198736}, {"from": "News_Page 4", "to": "News_Page 18", "value": 0.12792931955155704}, {"from": "News_Page 4", "to": "News_Page 20", "value": 0.34900680098990977}, {"from": "News_Page 5", "to": "News_Page 6", "value": 0.3009936931961668}, {"from": "News_Page 5", "to": "News_Page 7", "value": 0.05165831263620533}, {"from": "News_Page 5", "to": "News_Page 8", "value": 0.3289207179277826}, {"from": "News_Page 5", "to": "News_Page 10", "value": 0.15381124220290124}, {"from": "News_Page 5", "to": "News_Page 13", "value": 0.09159723663032952}, {"from": "News_Page 5", "to": "News_Page 15", "value": 0.2712926726507974}, {"from": "News_Page 5", "to": "News_Page 18", "value": 0.13258777044317174}, {"from": "News_Page 5", "to": "News_Page 20", "value": 0.41752050941720237}, {"from": "News_Page 6", "to": "News_Page 7", "value": 0.27115530762233003}, {"from": "News_Page 6", "to": "News_Page 8", "value": 0.12374415111295248}, {"from": "News_Page 6", "to": "News_Page 10", "value": 0.11573148519155096}, {"from": "News_Page 6", "to": "News_Page 15", "value": 0.06341558587506274}, {"from": "News_Page 6", "to": "News_Page 16", "value": 0.08286416623938218}, {"from": "News_Page 6", "to": "News_Page 19", "value": 0.054960190919390896}, {"from": "News_Page 6", "to": "News_Page 20", "value": 0.06702394384454438}, {"from": "News_Page 7", "to": "News_Page 8", "value": 0.06634088577853602}, {"from": "News_Page 7", "to": "News_Page 10", "value": 0.09566849005587898}, {"from": "News_Page 7", "to": "News_Page 13", "value": 0.063511051322086}, {"from": "News_Page 7", "to": "News_Page 16", "value": 0.08434727692802031}, {"from": "News_Page 7", "to": "News_Page 18", "value": 0.21029250749691136}, {"from": "News_Page 7", "to": "News_Page 19", "value": 0.20164562849286413}, {"from": "News_Page 8", "to": "News_Page 10", "value": 0.19667978992004154}, {"from": "News_Page 8", "to": "News_Page 12", "value": 0.0865347331156309}, {"from": "News_Page 8", "to": "News_Page 13", "value": 0.08216846573494845}, {"from": "News_Page 8", "to": "News_Page 15", "value": 0.15293286311409915}, {"from": "News_Page 8", "to": "News_Page 16", "value": 0.15879964540301664}, {"from": "News_Page 8", "to": "News_Page 18", "value": 0.13220919342932613}, {"from": "News_Page 8", "to": "News_Page 19", "value": 0.22836920404554537}, {"from": "News_Page 8", "to": "News_Page 20", "value": 0.1402156684125109}, {"from": "News_Page 9", "to": "News_Page 11", "value": 0.12021218804778297}, {"from": "News_Page 9", "to": "News_Page 13", "value": 0.27278834541512964}, {"from": "News_Page 9", "to": "News_Page 14", "value": 0.0908359679290135}, {"from": "News_Page 9", "to": "News_Page 15", "value": 0.08366710602261546}, {"from": "News_Page 9", "to": "News_Page 17", "value": 0.12468142365933141}, {"from": "News_Page 9", "to": "News_Page 18", "value": 0.1974317122002447}, {"from": "News_Page 10", "to": "News_Page 13", "value": 0.0509893646758821}, {"from": "News_Page 10", "to": "News_Page 16", "value": 0.1442862792249044}, {"from": "News_Page 10", "to": "News_Page 18", "value": 0.08658980422960229}, {"from": "News_Page 11", "to": "News_Page 12", "value": 0.10952227078802128}, {"from": "News_Page 11", "to": "News_Page 13", "value": 0.09020002574945249}, {"from": "News_Page 11", "to": "News_Page 14", "value": 0.10737825769284542}, {"from": "News_Page 11", "to": "News_Page 18", "value": 0.06528264797060813}, {"from": "News_Page 12", "to": "News_Page 14", "value": 0.10839728763022077}, {"from": "News_Page 12", "to": "News_Page 19", "value": 0.14594584067159203}, {"from": "News_Page 13", "to": "News_Page 14", "value": 0.06815786967388592}, {"from": "News_Page 13", "to": "News_Page 15", "value": 0.29804506341611314}, {"from": "News_Page 13", "to": "News_Page 18", "value": 0.22533030384302766}, {"from": "News_Page 14", "to": "News_Page 15", "value": 0.07473475208137775}, {"from": "News_Page 14", "to": "News_Page 20", "value": 0.10890352053058301}, {"from": "News_Page 15", "to": "News_Page 16", "value": 0.11000837080565237}, {"from": "News_Page 15", "to": "News_Page 18", "value": 0.11999044632446554}, {"from": "News_Page 15", "to": "News_Page 20", "value": 0.22645884430587554}, {"from": "News_Page 16", "to": "News_Page 17", "value": 0.19500451460392623}, {"from": "News_Page 16", "to": "News_Page 18", "value": 0.0876125865304389}, {"from": "News_Page 16", "to": "News_Page 19", "value": 0.06688166065409404}, {"from": "News_Page 16", "to": "News_Page 20", "value": 0.054580854054129234}, {"from": "News_Page 18", "to": "News_Page 19", "value": 0.08414060665719376}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+        // if this network requires displaying the configure window,
+        // put it in its div
+        options.configure["container"] = document.getElementById("config");
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
