@@ -8,7 +8,6 @@ import sys
 import os
 sys.path.append('./')
 sys.path.append('./../..')
-print(sys.path)
 if True:
     from src.utils.__RepoPath__ import repo_path
     from src.utils.logger import get_logger
@@ -19,14 +18,13 @@ logger = get_logger('OCR')
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 
 
-def get_string(IMAGE_PATH, lang='deu', debug=False):
+def get_string(IMAGE_PATH, lang='deu'):
     # Simple image to string
     text = pytesseract.image_to_string(
         Image.open(IMAGE_PATH), lang=lang)  # 'deu'
     # text = TextBlob(text)
 
-    if debug:
-        logger.debug(text)
+    logger.debug(f'Tesseract extracted: \n {text}')
 
     return text
 

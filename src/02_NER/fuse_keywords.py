@@ -5,20 +5,12 @@ from keyword_extractor import extract_keyword_score
 import logging
 import sys
 sys.path.append('./')
-print(sys.path)
 if True:
     from src.utils.__RepoPath__ import repo_path
+    from src.utils.logger import get_logger
 
 
-ner_logger = logging.getLogger('NER')
-ner_logger.setLevel(logging.DEBUG)
-console = logging.StreamHandler()
-console.setLevel(logging.DEBUG)
-formatter = logging.Formatter(
-    '%(asctime)s : %(name)s : %(levelname)s : %(message)s', "%H:%M:%S")
-console.setFormatter(formatter)
-ner_logger.addHandler(console)
-
+ner_logger = get_logger('NER')
 
 def fuse(text: str, max_nouns: int = None, max_verbs: int = None):
     scores = dict(extract_keyword_score(text))
