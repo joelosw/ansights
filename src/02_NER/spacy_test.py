@@ -5,7 +5,6 @@ import sys
 from enum import Enum
 
 sys.path.append('./')
-print(sys.path)
 if True:
     from src.utils.__RepoPath__ import repo_path
 nlp = spacy.load("de_core_news_md")
@@ -27,7 +26,7 @@ def extract_nouns_and_verbs(text):
             result[WordType(token.pos)].append(token.text)
             print(
                 f'| {token.text} \t | {token.pos_} \t | {token.pos} \t | {token.tag_}')
-    print(f'RResult: {result}')
+    #print(f'Result: {result}')
     return result
 
 
