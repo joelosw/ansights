@@ -7,47 +7,52 @@ from sklearn.metrics.pairwise import linear_kernel
 
 class TFIDF():
 
-    def __init__(self, docs :list):
+    def __init__(self, docs :list, verbose=False):
         self.docs = docs
-        self.tf = 0
-        self.idf = 0
-        self.tf_idf = 0
-        self.cosine_similarities = []
+        self.tf = self.get_tf(verbose=verbose)
+        self.idf = self.get_idf(verbose=verbose)
+        self.tf_idf = self.get_tf_idf(verbose=verbose)
 
-    def set_tf(self, verbose=False):
+    def get_tf(self, verbose=False):
         self.cv = CountVectorizer()
         self.word_count_vector = self.cv.fit_transform(self.docs)
-        self.tf = pd.DataFrame(self.word_count_vector.toarray(), columns=self.cv.get_feature_names_out())
+        tf = pd.DataFrame(self.word_count_vector.toarray(), columns=self.cv.get_feature_names_out())
         if verbose:
-            print('tf:', self.tf)
+            print('tf:', tf)
+        return tf
 
-    def set_idf(self, verbose=False):
+    def get_idf(self, verbose=False):
         self.tfidf_transformer = TfidfTransformer()
         self.X = self.tfidf_transformer.fit_transform(self.word_count_vector)
-        self.idf = pd.DataFrame({'feature_name':self.cv.get_feature_names_out(), 'idf_weights':self.tfidf_transformer.idf_})
+        idf = pd.DataFrame({'feature_name':self.cv.get_feature_names_out(), 'idf_weights':self.tfidf_transformer.idf_})
         if verbose:
-            print('idf:', self.idf)
+            print('idf:', idf)
+        return idf
 
-    def set_tf_idf(self, verbose=False):
-        self.tf_idf = pd.DataFrame(self.X.toarray() ,columns=self.cv.get_feature_names_out())
+    def get_tf_idf(self, verbose=False):
+        tf_idf = pd.DataFrame(self.X.toarray() ,columns=self.cv.get_feature_names_out())
         if verbose:
-            print('tf_idf:', self.tf_idf)
+            print('tf_idf:', tf_idf)
+        return tf_idf
 
-    def set_cosine_similarity(self, verbose=False):
-        self.cosine_similarities = linear_kernel(self.tf_idf, self.tf_idf)
+    def get_cosine_similarity(self, comp_data, verbose=False):
+        cosine_similarities = linear_kernel(self.tf_idf, comp_data)
         if verbose:
             print('Cosine Similarity:', self.cosine_similarities)
+        
+        return cosine_similarities
 
 
-def get_reichsanzeiger_docs_relation_matrix(docs :list, verbose=False):
+def get_reichsanzeiger_docs_relation_matrix(docs :list, keywords=None, verbose=False):
 
-    tfidf_object = TFIDF(docs)
-    tfidf_object.set_tf(verbose=verbose)
-    tfidf_object.set_idf(verbose=verbose)
-    tfidf_object.set_tf_idf(verbose=verbose)
-    tfidf_object.set_cosine_similarity(verbose=verbose)
+    docs_tfidf = TFIDF(docs, verbose=verbose)
+    if keywords == None:
+        cosine_similarities = docs_tfidf.get_cosine_similarity(comp_data=docs_tfidf.tf_idf, verbose=verbose)
+    else:
+        keywords_tfidf = TFIDF(keywords, verbose=verbose)
+        cosine_similarities = docs_tfidf.get_cosine_similarity(comp_data=keywords_tfidf.tf_idf, verbose=verbose)
 
-    return tfidf_object.cosine_similarities
+    return cosine_similarities
 
 if __name__ == '__main__':
 
