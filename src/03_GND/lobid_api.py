@@ -183,12 +183,20 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
     return keyword_relation_list
 
 
-# TEST
-keys = ['Arbeiter', 'Arbeitgeber', 'Gasarbeiter',
-        'Betriebe', 'auszumachen', 'streiken']
-df = get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=False, verbose=False,
-                              max_keyword_relations=3)
+def df_to_dict(df):
+    result = {}
+    for i in range(df.shape[1]):
+        result[df.columns[i]] = list(filter(None, df.iloc[0, i]))
+    return result
 
-print(df)
-[print(f'{df.columns[i]} : {df.iloc[0,i]}') for i in range(df.shape[1])]
-print(df.shape)
+
+if __name__ == '__main__':
+    # TEST
+    keys = ['Arbeiter', 'Arbeitgeber', 'Gasarbeiter',
+            'Betriebe', 'auszumachen', 'streiken']
+    df = get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=True, verbose=True,
+                                  max_keyword_relations=3)
+
+    print(df)
+    [print(f'{df.columns[i]} : {df.iloc[0,i]}') for i in range(df.shape[1])]
+    print(df.shape)

@@ -2,6 +2,12 @@ import requests
 from typing import Text, Union, Iterable, Dict, Any, Type, List
 from datetime import datetime
 import html2text
+import sys
+sys.path.append('./')
+sys.path.append('./../')
+sys.path.append('./../..')
+from src.utils.logger import get_logger
+fess_logger = get_logger('FESS')
 JSON = Union[Dict[str, Any], List[Any], int, str, float, bool, Type[None]]
 base_url = 'https://digi.bib.uni-mannheim.de/fess/json/?q='
 tesseract5_label = '&fields.label=20211201'
@@ -19,7 +25,7 @@ def query_reichsanzeiger(query_terms: Union[str, Iterable[str]]):
     else:  # otherwise
         raise Exception(
             "Call can only handle list of keywords or string with space-seperated keywords")
-    print(f'Calling {base_url + query_terms + tesseract5_label}')
+    fess_logger.debug(f'Calling {base_url + query_terms + tesseract5_label}')
     response = requests.get(base_url + query_terms + tesseract5_label)
     return response.json()
 
@@ -59,7 +65,7 @@ def query_and_process(query_term: str, add_text: bool = False):
 
 def count_for_query(query_term: str):
     result_json = query_reichsanzeiger(query_term)['response']
-    print(result_json.keys())
+    fess_logger.debug(f'Keys in result: {result_json.keys()}')
     return result_json['record_count']
 
 
