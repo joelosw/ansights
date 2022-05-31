@@ -10,7 +10,7 @@ if True:
     from tesseract import get_string
     from fuse_keywords import fuse
     from lobid_api import get_gnd_keywordRelations, df_to_dict
-    from build_newspaper_relations import build_relations
+    from build_newspaper_relations import build_relations, build_relations_with_synonyms
 logger = get_logger('MAIN')
 
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
@@ -27,9 +27,12 @@ def main(args: argparse):
         keywords_extended = df_to_dict(get_gnd_keywordRelations(keywords=keywords, max_query_items=30, print_output=False, verbose=False,
                                                                 max_keyword_relations=3))
         logger.info(f'GND-Extended Keywords: {keywords_extended}')
-        raise Warning('GND-Extended seaerch currently not enabled')
-
-    relations = build_relations(keywords).values()
+        relations = build_relations_with_synonyms(keywords_extended).values()
+        #raise Warning('GND-Extended seaerch currently not enabled')
+    else:
+        relations = build_relations(keywords).values()
+    logger.info(
+        f'Main Programm finnishing with {len(relations)} results: \n {relations}')
 
 
 def parse_args():
