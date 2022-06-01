@@ -25,7 +25,7 @@ def query_reichsanzeiger(query_terms: Union[str, Iterable[str]]):
     else:  # otherwise
         raise Exception(
             "Call can only handle list of keywords or string with space-seperated keywords")
-    fess_logger.debug(f'Calling {base_url + query_terms + tesseract5_label}')
+    # fess_logger.debug(f'Calling {base_url + query_terms + tesseract5_label}')
     response = requests.get(base_url + query_terms + tesseract5_label)
     return response.json()
 

@@ -8,4 +8,5 @@ sys.path.append(os.path.join(this_path, '01_OCR'))
 sys.path.append(os.path.join(this_path, '02_NER'))
 sys.path.append(os.path.join(this_path, '03_GND'))
 sys.path.append(os.path.join(this_path, '04_Reichsanzeiger'))
+sys.path.append(os.path.join(this_path, '05_Visualization'))
 

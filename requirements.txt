@@ -13,3 +13,4 @@ tqdm
 yake
 pillow
 sklearn
+pickle
