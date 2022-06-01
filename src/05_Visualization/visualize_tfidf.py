@@ -15,7 +15,7 @@ class VisAnz_Net():
         #self.le = self.get_labelEncoder()
         self.net = self.get_pyvis_net(height=height, width=width, bgcolor=bgcolor, font_color=font_color)
         self.docs = self.get_docs()
-        set_edge_data(self, verbose=False)
+        self.set_node_edge_data(verbose=verbose)
     
     def __eq__(self, other):
         other.net == self.net
@@ -35,7 +35,7 @@ class VisAnz_Net():
         #net.force_atlas_2based(gravity=-80000, central_gravity=0.3, spring_length=250, spring_strength=0.001, damping=0.09, overlap=0)
         return net
 
-    def set_edge_data(self, verbose=False):
+    def set_node_edge_data(self, verbose=False):
                 
         similarities = get_reichsanzeiger_docs_relation_matrix(docs=self.docs, verbose=verbose)
         #group_weights = get_reichsanzeiger_docs_relation_matrix(docs=self.docs, comp_data=self.keywords, verbose=verbose)
@@ -44,16 +44,20 @@ class VisAnz_Net():
         
         for i, value in enumerate(self.data_dict['id']):
             self.net.add_node(n_id=self.data_dict['id'][i], label=self.data_dict['name'][i], 
-                              title=self.data_dict['url'][i], group=self.data_dict['keyword'][i], physics=False)
+                              title=self.data_dict['url'][i], group=self.data_dict['keyword'][i], physics=True)
 
-        edge_threshold = 0.5
+        edge_threshold = 0.8
 
         for i in range(len(self.data_dict['id'])):
             for j in range(i):
                 if i != j:
                     edge_weight = (similarities[i,j] + 1) / 2
-                    self.net.add_edge(self.data_dict['id'][i], self.data_dict['id'][j],
-                                      value=edge_weight, hidden=(edge_weight<edge_threshold))
+                    if (edge_weight<edge_threshold):
+                        self.net.add_edge(source=self.data_dict['id'][i], to=self.data_dict['id'][j],
+                                        value=edge_weight*10, hidden=True, physics=True)
+                    else:
+                        self.net.add_edge(source=self.data_dict['id'][i], to=self.data_dict['id'][j],
+                                        value=edge_weight*10, hidden=False, physics=True)
 
         # neighbor_map = self.net.get_adj_list()
         
@@ -65,9 +69,9 @@ class VisAnz_Net():
     def show_net(self, PATH_NET='VisualAnzeights.html'):
         self.net.toggle_physics(True)
         # self.net.set_options()
-        #self.net.clustering.cluster()
+        # self.net.clustering.cluster()
         # Configure(enabled=True)
-        # self.net.show_buttons(filter_=['physics'])
+        self.net.show_buttons(filter_=['physics'])
         #self.net.repulsion(node_distance=100, central_gravity=0.2, spring_length=200, spring_strength=0.05, damping=0.09)
         self.net.show(PATH_NET)
 

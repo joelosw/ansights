@@ -43,7 +43,8 @@ def main(args: argparse):
     else:
         with open('relations-cache.pkl', 'rb') as f:
             relations = pickle.load(f)
-        
+    
+    print(relations)
     vis_relations = {}
     vis_relations['id']=[]
     vis_relations['name']=[]
