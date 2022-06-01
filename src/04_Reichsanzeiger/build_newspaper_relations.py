@@ -3,6 +3,8 @@ from itertools import combinations
 import random
 import logging
 import sys
+import html2text
+import requests
 from tqdm import tqdm
 sys.path.append('./')
 sys.path.append('./../')
@@ -27,6 +29,13 @@ class News_Page:
 
     def add_keywords(self, additional_keywords):
         self.keywords.update(additional_keywords)
+
+    def context(self):
+        """return text of Newspage
+        """
+        data = requests.get(self.url)
+        text = html2text.html2text(data.text)
+        return text
 
     def __eq__(self, other):
         other.url == self.url
