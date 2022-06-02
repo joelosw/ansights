@@ -11,11 +11,15 @@ if True:
     from tesseract import get_string
     from fuse_keywords import fuse
     from lobid_api import get_gnd_keywordRelations, df_to_dict
-    from build_newspaper_relations import build_relations, build_relations_with_synonyms
+    from build_newspaper_relations import build_relations, build_relations_with_synonyms, build_relations_async
     from visualize_tfidf import VisAnz_Net
 logger = get_logger('MAIN')
 
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
+
+# TODO: Check wordnet for cleaning OCR  text (part of nltk?) -> Don't lemmatize
+# TODO: Include spacy NER if found, statistics on FP/FN of NER
+# TODO: Ask about limitations of FESS-API
 
 
 def main(args: argparse):
@@ -30,27 +34,27 @@ def main(args: argparse):
             keywords_extended = df_to_dict(get_gnd_keywordRelations(keywords=keywords, max_query_items=30, print_output=False, verbose=False,
                                                                     max_keyword_relations=1))
             logger.info(f'GND-Extended Keywords: {keywords_extended}')
-            relations = build_relations_with_synonyms(keywords_extended).values()
+            relations = build_relations_with_synonyms(
+                keywords_extended).values()
             #raise Warning('GND-Extended seaerch currently not enabled')
         else:
-            relations = build_relations(keywords).values()
+            relations = build_relations_async(keywords).values()
         logger.info(
             f'Main Programm finnishing with {len(relations)} results: \n {relations}')
-        
+
         with open('relations-cache.pkl', 'wb') as f:
             pickle.dump(list(relations), f)
-    
+
     else:
         with open('relations-cache.pkl', 'rb') as f:
             relations = pickle.load(f)
-    
-    print(relations)
+            logger.info('Loaded cached relations: {relations}')
     vis_relations = {}
-    vis_relations['id']=[]
-    vis_relations['name']=[]
-    vis_relations['context']=[]
-    vis_relations['url']=[]
-    vis_relations['keyword']=[]
+    vis_relations['id'] = []
+    vis_relations['name'] = []
+    vis_relations['context'] = []
+    vis_relations['url'] = []
+    vis_relations['keyword'] = []
 
     for i, value in enumerate(relations):
         vis_relations['id'].append(i)
@@ -59,10 +63,12 @@ def main(args: argparse):
         vis_relations['context'].append(value.context())
         vis_relations['url'].append(value.url)
         vis_relations['keyword'].append(next(iter(value.keywords)))
-        
-    data_keywords = ['test', 'test','test']
-    visAnz_net = VisAnz_Net(data_dict=vis_relations, data_keywords=data_keywords)
-    visAnz_net.show_net(PATH_NET='src/05_Visualization/Models/VisualAnzeights.html')
+
+    data_keywords = ['test', 'test', 'test']
+    visAnz_net = VisAnz_Net(data_dict=vis_relations,
+                            data_keywords=data_keywords)
+    visAnz_net.show_net(
+        PATH_NET='src/05_Visualization/Models/VisualAnzeights.html')
 
 
 def parse_args():

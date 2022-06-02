@@ -13,4 +13,7 @@ tqdm
 yake
 pillow
 sklearn
-pickle
+pickl
+pyvis
+aiohttp
+asyncio

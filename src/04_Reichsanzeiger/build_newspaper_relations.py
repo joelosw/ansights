@@ -1,4 +1,6 @@
 from fess_api import query_and_process, count_for_query, query_reichsanzeiger
+from news_page import News_Page
+from parallel_query import parallel_query
 from itertools import combinations
 import random
 import logging
@@ -15,39 +17,6 @@ if True:
 logger = get_logger('REL')
 
 
-class News_Page:
-    keywords: set = set()
-    url: str
-
-    def __init__(self, url, init_keywords=None):
-        self.url = url
-        if isinstance(init_keywords, str):
-            init_keywords = init_keywords.split(' ')
-        else:
-            init_keywords = init_keywords
-        self.keywords.update(init_keywords)
-
-    def add_keywords(self, additional_keywords):
-        self.keywords.update(additional_keywords)
-
-    def context(self):
-        """return text of Newspage
-        """
-        data = requests.get(self.url)
-        text = html2text.html2text(data.text)
-        return text
-
-    def __eq__(self, other):
-        other.url == self.url
-
-    def common_keywords(self, other):
-        return self.keywords.intersection(other.keywords)
-
-    def __str__(self) -> str:
-        return f'\n ========== \n Newspaper Page  from URL: \n {self.url} with keywords {self.keywords} ====== \n'
-
-    def __repr__(self) -> str:
-        return self.__str__()
 # First step, binary search at how many keywords we get results (presumably none if we throw in all keywords, and too many if we throw in 1 kw)
 
 
@@ -79,6 +48,17 @@ def binary_search_number_of_keywords(all_keywords: list, lowest=1, highest=None,
         else:
             raise Warning(
                 'Could not find number of keywords suffiecient to query Reichsanzeigeer')
+
+
+def build_relations_async(all_keywords: list):
+    number_with_results = binary_search_number_of_keywords(all_keywords)
+
+    combs = list(combinations(all_keywords, number_with_results))
+
+    logger.info(f'Trying out {len(combs)} combinations')
+    news_page = parallel_query(combs)
+    logger.debug(f'Created dict for {len(news_page)} scanned pages')
+    return news_page
 
 
 def build_relations(all_keywords: list):

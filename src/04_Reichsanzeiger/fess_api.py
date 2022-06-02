@@ -1,3 +1,4 @@
+
 import requests
 from typing import Text, Union, Iterable, Dict, Any, Type, List
 from datetime import datetime
@@ -18,6 +19,13 @@ example_query = "Spartakus Stuttgart 1919"
 
 def query_reichsanzeiger(query_terms: Union[str, Iterable[str]]):
     # If query_terms is of type list:
+    url = url_from_query_terms(query_terms)
+    fess_logger.debug(f'Calling {url}')
+    response = requests.get(url)
+    return response.json()
+
+
+def url_from_query_terms(query_terms: Union[str, Iterable[str]]):
     if isinstance(query_terms, list) or isinstance(query_terms, tuple):
         query_terms = '+'.join(query_terms)
     elif isinstance(query_terms, str):
@@ -25,9 +33,8 @@ def query_reichsanzeiger(query_terms: Union[str, Iterable[str]]):
     else:  # otherwise
         raise Exception(
             "Call can only handle list of keywords or string with space-seperated keywords")
-    # fess_logger.debug(f'Calling {base_url + query_terms + tesseract5_label}')
-    response = requests.get(base_url + query_terms + tesseract5_label)
-    return response.json()
+    url = base_url + query_terms + tesseract5_label
+    return url
 
 
 def add_date_to_results(results: Iterable[JSON]) -> Iterable[JSON]:

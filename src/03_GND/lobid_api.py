@@ -195,7 +195,7 @@ if __name__ == '__main__':
     keys = ['Arbeiter', 'Arbeitgeber', 'Gasarbeiter',
             'Betriebe', 'auszumachen', 'streiken']
     df = get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=True, verbose=True,
-                                  max_keyword_relations=3)
+                                  max_keyword_relations=15)
 
     print(df)
     [print(f'{df.columns[i]} : {df.iloc[0,i]}') for i in range(df.shape[1])]
