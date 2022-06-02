@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 import pickle
+import webbrowser
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
@@ -16,7 +17,8 @@ if True:
 logger = get_logger('MAIN')
 
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
-
+HTML_PATH = os.path.join(
+    repo_path, 'src/05_Visualization/Models/VisualAnzeights.html')
 # TODO: Check wordnet for cleaning OCR  text (part of nltk?) -> Don't lemmatize
 # TODO: Include spacy NER if found, statistics on FP/FN of NER
 # TODO: Ask about limitations of FESS-API
@@ -24,7 +26,7 @@ TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 
 def main(args: argparse):
     if not args.cache:
-        ocr_text = get_string(TEST_PATH, lang='deu_frak')
+        ocr_text = get_string(args.file, lang='deu_frak')
         logger.info('OCR returned text: %s' % ocr_text)
         keywords_with_score = fuse(ocr_text, max_nouns=4, max_verbs=2)
         keywords = list(keywords_with_score.keys())
@@ -68,7 +70,8 @@ def main(args: argparse):
     visAnz_net = VisAnz_Net(data_dict=vis_relations,
                             data_keywords=data_keywords)
     visAnz_net.show_net(
-        PATH_NET='src/05_Visualization/Models/VisualAnzeights.html')
+        PATH_NET=HTML_PATH)
+    webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
 
 
 def parse_args():
