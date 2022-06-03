@@ -1,11 +1,11 @@
 import requests
 import html2text
-class News_Page:
-    keywords: set = set()
-    url: str
 
+
+class News_Page:
     def __init__(self, url, init_keywords=None):
-        self.url = url
+        self.url: str = url
+        self.keywords: set = set()
         if isinstance(init_keywords, str):
             init_keywords = init_keywords.split(' ')
         else:
