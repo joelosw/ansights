@@ -1,7 +1,7 @@
 from fess_api import query_and_process, count_for_query, query_reichsanzeiger
 from news_page import News_Page
 from parallel_query import parallel_query
-from itertools import combinations
+from itertools import combinations, chain
 import random
 import logging
 import sys
@@ -50,11 +50,16 @@ def binary_search_number_of_keywords(all_keywords: list, lowest=1, highest=None,
                 'Could not find number of keywords suffiecient to query Reichsanzeigeer')
 
 
-def build_relations_async(all_keywords: list):
+def build_relations_async(all_keywords: list, sample=None):
     number_with_results = binary_search_number_of_keywords(all_keywords)
-
-    combs = list(combinations(all_keywords, number_with_results))
-
+    if sample is None:
+        combs = list(combinations(all_keywords, number_with_results))
+    else:
+        main_iter = chain.from_iterable(combinations(
+            all_keywords, num) for num in range(1, len(all_keywords)))
+        powerset = list(main_iter)
+        logger.debug(f'Going to sample {sample} from {len(powerset)}')
+        combs = random.sample(powerset, min(sample, len(powerset)))
     logger.info(f'Trying out {len(combs)} combinations')
     news_page = parallel_query(combs)
     logger.debug(f'Created dict for {len(news_page)} scanned pages')
