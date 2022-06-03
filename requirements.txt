@@ -17,3 +17,4 @@ pickl
 pyvis
 aiohttp
 asyncio
+opencv-python
