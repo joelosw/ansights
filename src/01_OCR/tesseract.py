@@ -85,4 +85,4 @@ def get_text_dict(languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=Fal
 
 if __name__ == '__main__':
     get_text_dict(
-        languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=False)
+        languages=['deu_frak'], IMAGE_PATH=TEST_PATH, debug=False)

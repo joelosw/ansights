@@ -1,6 +1,7 @@
 # Imports
 import requests
 import pandas as pd
+import spacy
 
 from collections import defaultdict
 
@@ -121,11 +122,13 @@ def get_gnd_keywordRelations(keywords: list, max_query_items=10, print_output=Tr
                 if not as_list and remove_duplicates:
                     df[keyword][0][json_key] = list(
                         dict.fromkeys(df[keyword][0][json_key]))
+                
+                df[keyword][0][json_key] = [word.split(' ')[0].strip(';/:"') for word in df[keyword][0][json_key]]
 
         if as_list:
             keyword_relation_list = get_relevant_relations_as_list(df[keyword][0], keyword=keyword,
-                                                                   verbose=verbose,
-                                                                   max_keyword_relations=max_keyword_relations)
+                                                                verbose=verbose,
+                                                                max_keyword_relations=max_keyword_relations)
             df[keyword][0] = keyword_relation_list
 
         if print_output:
@@ -139,7 +142,7 @@ def get_gnd_keywordRelations(keywords: list, max_query_items=10, print_output=Tr
 def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_keyword_relations=3):
     """
         The get_relevant_relations_as_list function accepts a dictionary with all related words and transforms 
-        it to a single list with the most common words.
+        it to a single set with the most partnered words.
 
         :param df :dict: Used to pass the dictionary for each keyword.
         :param keyword: Used to pass keyword of our query.
@@ -147,35 +150,36 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
         :param verbose=False: Used to print out relevant information for debugging.
         :return: A list.
     """
-
-    keyword_relation_list = []
-
+    nlp = spacy.load('de_core_news_sm')
+    keyword_token = nlp(keyword)
+    keyword_relation_set = set()
+    keyword_similarities = []
+    
     # Convert dictionary to simple list
     for key, relation_list in df.items():
 
         for word in relation_list:
             if word != keyword:
-                keyword_relation_list.append(word)
-
-    freq_words = set()
-    temp = defaultdict(int)
-
-    # Detect most frequent words in list
-    for i in range(max_keyword_relations):
-        for rel_word in keyword_relation_list:
-            temp[rel_word] += 1
-
-        # getting max frequency
-        try:
-            freq_word = max(temp, key=temp.get)
-        except ValueError:
-            freq_word = None
-
-        freq_words.add(freq_word)
-        keyword_relation_list = [
-            word for word in keyword_relation_list if word != freq_word]
-
-    keyword_relation_list = freq_words.copy()
+                keyword_relation_set.add(word)
+    
+    if len(keyword_relation_set) > 0:
+    
+        for i, word in enumerate(keyword_relation_set):
+            keyword_similarities.append(keyword_token.similarity(nlp(word)))
+        
+        print(len(keyword_relation_set))
+        
+        
+        while True:
+            try:
+                keyword_relation_list = list(zip(*sorted(zip(keyword_relation_set, keyword_similarities), reverse=True)[:max_keyword_relations]))[0]
+                break
+            except IndexError:
+                max_keyword_relations -= 1
+                continue
+    
+    else:
+        keyword_relation_list = []
 
     if verbose:
         print('keyword_relation_list:', keyword_relation_list)
@@ -194,9 +198,8 @@ if __name__ == '__main__':
     # TEST
     keys = ['Arbeiter', 'Arbeitgeber', 'Gasarbeiter',
             'Betriebe', 'auszumachen', 'streiken']
-    df = get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=True, verbose=True,
-                                  max_keyword_relations=15)
+    df = get_gnd_keywordRelations(keywords=keys, max_query_items=200, print_output=True, verbose=False,
+                                  max_keyword_relations=5)
 
-    print(df)
     [print(f'{df.columns[i]} : {df.iloc[0,i]}') for i in range(df.shape[1])]
     print(df.shape)
