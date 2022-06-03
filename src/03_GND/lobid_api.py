@@ -179,7 +179,7 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
                 continue
     
     else:
-        keyword_relation_list = []
+        keyword_relation_list = set()
 
     if verbose:
         print('keyword_relation_list:', keyword_relation_list)
