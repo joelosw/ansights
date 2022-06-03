@@ -31,7 +31,7 @@ def main(args: argparse):
     if not args.cache:
         ocr_text = get_string(args.file, lang='deu_frak')
         logger.info('OCR returned text: %s' % ocr_text)
-        keywords_with_score = fuse(ocr_text, max_nouns=5, max_verbs=3)
+        keywords_with_score = fuse(ocr_text, max_nouns=4, max_verbs=3)
         keywords = list(keywords_with_score.keys())
         logger.info(f'Extracted Keywords: {keywords}')
 
@@ -44,7 +44,7 @@ def main(args: argparse):
             #raise Warning('GND-Extended seaerch currently not enabled')
         else:
             t1 = time.time()
-            relations = build_relations_async(keywords).values()
+            relations = build_relations_async(keywords, args.sample).values()
             logger.info(f'Building relations took {time.time() - t1} seconds')
         logger.info(
             f'Main Programm finnishing with {len(relations)} results')
@@ -95,7 +95,10 @@ def parse_args():
                         'Instead just use the results from the last query')
     parser.add_argument('-p', '--parallel', action='store_true', required=False,
                         help='Use AsyncIOHttp to parallelize requests to the Reichsanzeiger FESS-API')
-
+    parser.add_argument('--keyvis', action='store_true', required=False,
+                        help='Use Common Keywords to calculate distance between nodes')
+    parser.add_argument('-s', '--sample', type=int, required=False,
+                        help='Use only a sample of possible keyword queries. This allows for multi-length queries')
     args = parser.parse_args()
     return args
 
