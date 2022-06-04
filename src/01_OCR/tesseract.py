@@ -1,7 +1,6 @@
 # Imports
 import pytesseract
 from PIL import Image
-from cleantext import clean
 from spellchecker import SpellChecker
 from textblob import TextBlob
 import sys
@@ -18,20 +17,14 @@ logger = get_logger('OCR')
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 
 
-def get_string(IMAGE_PATH, lang='deu'):
+def get_string(IMAGE_PATH, lang='deu-frak'):
     # Simple image to string
     text = pytesseract.image_to_string(
-        Image.open(IMAGE_PATH), lang=lang)  # 'deu'
-    # text = TextBlob(text)
+        Image.open(IMAGE_PATH), lang=lang)
 
     logger.debug(f'Tesseract extracted: \n {text}')
 
     return text
-
-
-def clean_text(text):
-    text_cleaned = clean(text[:])
-    return text_cleaned
 
 
 def init_SpellChecker():
@@ -66,7 +59,7 @@ def enhance_text(spell, text_cleaned, debug=False):
     return text_preprrocessed
 
 
-def get_text_dict(languages=['deu', 'deu_frak'], IMAGE_PATH=TEST_PATH, debug=False):
+def get_text_dict(languages=['deu_frak'], IMAGE_PATH=TEST_PATH, debug=False):
     text_strings = {}
     for lang in languages:
         logger.debug(f'===== LANGUAGE: {lang} =========')
