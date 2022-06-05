@@ -2,8 +2,14 @@
 import requests
 import pandas as pd
 import spacy
+import sys
 
 from collections import defaultdict
+
+sys.path.append('./')
+if True:
+    from src.utils.__RepoPath__ import repo_path
+nlp = spacy.load("de_core_news_md")
 
 
 def get_gnd_json(query: str, lobid_server='https://lobid.org/', catalog='gnd/search',
@@ -150,7 +156,7 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
         :param verbose=False: Used to print out relevant information for debugging.
         :return: A list.
     """
-    nlp = spacy.load('de_core_news_sm')
+    
     keyword_token = nlp(keyword)
     keyword_relation_set = set()
     keyword_similarities = []
@@ -167,19 +173,16 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
         for i, word in enumerate(keyword_relation_set):
             keyword_similarities.append(keyword_token.similarity(nlp(word)))
         
-        print(len(keyword_relation_set))
         
-        
-        while True:
+        for k in range(3):
             try:
                 keyword_relation_list = list(zip(*sorted(zip(keyword_relation_set, keyword_similarities), reverse=True)[:max_keyword_relations]))[0]
                 break
             except IndexError:
                 max_keyword_relations -= 1
-                continue
     
     else:
-        keyword_relation_list = set()
+        keyword_relation_list = ()
 
     if verbose:
         print('keyword_relation_list:', keyword_relation_list)
@@ -188,10 +191,10 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
 
 
 def df_to_dict(df):
-    result = {}
+    df_dict = {}
     for i in range(df.shape[1]):
-        result[df.columns[i]] = list(filter(None, df.iloc[0, i]))
-    return result
+        df_dict[df.columns[i]] = list(filter(None, df.iloc[0, i]))
+    return df_dict
 
 
 if __name__ == '__main__':

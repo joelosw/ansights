@@ -18,3 +18,5 @@ pyvis
 aiohttp
 asyncio
 opencv-python
+flask
+python-dotenv

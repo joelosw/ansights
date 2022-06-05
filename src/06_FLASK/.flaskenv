@@ -1,0 +1,2 @@
+FLASK_APP=flask_test.py
+FLASK_ENV=development
