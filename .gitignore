@@ -8,6 +8,7 @@ tessdata
 .DS_Store
 .vscode
 *.pkl
+launch.json
 VisualAnzeights.html
 src/01_MAIN/__pycache__
 src/02_OCR/__pycache__
