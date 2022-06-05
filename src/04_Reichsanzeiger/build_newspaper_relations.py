@@ -63,7 +63,7 @@ def build_relations_async(all_keywords: list, sample=None):
     logger.info(f'Trying out {len(combs)} combinations')
     news_page = parallel_query(combs)
     logger.debug(f'Created dict for {len(news_page)} scanned pages')
-    return news_page
+    return list(news_page.values())
 
 
 def build_relations(all_keywords: list):
@@ -84,7 +84,7 @@ def build_relations(all_keywords: list):
             else:
                 news_page[current_url].add_keywords(query_sample)
     logger.debug(f'Created dict for {len(news_page)} scanned pages')
-    return news_page
+    return list(news_page.values())
 
 
 def get_main_words(keywords_dict):
@@ -95,14 +95,12 @@ def get_main_words(keywords_dict):
 
 
 def build_relations_with_synonyms(keywords_dict: dict):
-    # number_with_results = binary_search_number_of_keywords(
-    #     get_main_words(keywords_dict))
-    number_with_results = 3
+    number_with_results = binary_search_number_of_keywords(
+        get_main_words(keywords_dict))
     news_page = dict()
     synonyms = synonyms_iterator_helper(keywords_dict, number_with_results)
     synonyms_list = list(synonyms)
     logger.info(f'Mem-Size of all synonyms: {sys.getsizeof(synonyms_list)}')
-    #synonyms_iterator = iter(synonyms)
     for query_sample in tqdm(synonyms_list):
         # logger.debug(f' ====> Got new ngram: ({query_sample})')
         if query_sample is None:
@@ -120,7 +118,28 @@ def build_relations_with_synonyms(keywords_dict: dict):
             else:
                 news_page[current_url].add_keywords(keyword_sample)
     logger.debug(f'Created dict for {len(news_page)} scanned pages')
-    return news_page
+    return list(news_page.values())
+
+
+def build_relations_with_synonyms_async(keywords_dict: dict, num_workers: int = 10, sample: int = None):
+    # number_with_results = binary_search_number_of_keywords(
+    #     get_main_words(keywords_dict))
+    number_with_results = 3
+    synonyms = synonyms_iterator_helper(keywords_dict, number_with_results)
+    if sample:
+        main_iter = chain.from_iterable(iter(synonyms_iterator_helper(
+            keywords_dict, num)) for num in range(1, len(keywords_dict)))
+        # Get rid of Nones...
+        powerset = [query for query in main_iter if query]
+        logger.debug(f'Going to sample {sample} from {len(powerset)}')
+        combs = random.sample(powerset, min(sample, len(powerset)))
+    else:
+        combs = list(synonyms)
+
+    logger.info(f'Trying out {len(combs)} combinations')
+    news_page = parallel_query(combs, num_workers, synonyms)
+    logger.debug(f'Created dict for {len(news_page)} scanned pages')
+    return list(news_page.values())
 
 
 if __name__ == '__main__':

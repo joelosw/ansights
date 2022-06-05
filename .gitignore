@@ -6,3 +6,4 @@ venv_daVinci
 .DS_Store
 .vscode
 *.pkl
+launch.json

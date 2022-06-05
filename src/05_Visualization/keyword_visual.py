@@ -34,9 +34,8 @@ def create_graph(news_pages, physics=True, paper=None, num_keywords=6):
                      image='file:///Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_flyer.jpg')
     for i, page in enumerate(news_pages):
         net.add_node(i, size=10*len(page.keywords),
-                     title=page.url, label=page.name.split('-')[-1], shape='image', image='file:////Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_scan.jpg')
-        net.add_edge('KEY', i, weight=len(page.keywords), value=len(
-            page.keywords), smooth=False, title=','.join(page.keywords), color='darkblue')
+                     title=page.name + '\n Keywords: \n' + '\n'.join(page.keywords), label=page.name.split('-')[-1], shape='image', image='file:////Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_scan.jpg')
+
     for i in range(len(news_pages)):
         for j in range(i):
             #similarity = similarities[i, j]
@@ -46,7 +45,12 @@ def create_graph(news_pages, physics=True, paper=None, num_keywords=6):
             similarity = len(common_words)
             if similarity > 0:
                 net.add_edge(i, j, weight=similarity,
-                             value=similarity, smooth=False, title=','.join(common_words))
+                             value=similarity, smooth=False, title=','.join(common_words), color='#83c5be', color_highlight='#ffddd2')
+
+    for i, page in enumerate(news_pages):
+        # Add in the end, so they are on top
+        net.add_edge('KEY', i, weight=len(page.keywords), value=len(
+            page.keywords), smooth=False, title=','.join(page.keywords), color='#006d77')
     return net
 
 

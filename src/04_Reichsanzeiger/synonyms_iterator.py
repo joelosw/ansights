@@ -25,7 +25,8 @@ class synonyms_iterator_helper():
     def clean_dict(self, keywords_dict) -> dict:
         result = {}
         for key, value in keywords_dict.items():
-            result[key] = [re.sub(r'[^a-z A-Z]', '', v) for v in value if v is not None]
+            result[key] = [re.sub(r'[^a-z A-Z]', '', v)
+                           for v in value if v is not None]
             if len(result[key]) > 0:
                 # If we have synonyms for a word, also append the word itself, so that it is not skipped
                 result[key].insert(0, key)
