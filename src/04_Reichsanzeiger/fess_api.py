@@ -1,13 +1,14 @@
 
+from src.utils.logger import get_logger
 import requests
 from typing import Text, Union, Iterable, Dict, Any, Type, List
 from datetime import datetime
 import html2text
 import sys
+import numpy as np
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
-from src.utils.logger import get_logger
 fess_logger = get_logger('FESS')
 JSON = Union[Dict[str, Any], List[Any], int, str, float, bool, Type[None]]
 base_url = 'https://digi.bib.uni-mannheim.de/fess/json/?q='
@@ -19,6 +20,7 @@ example_query = "Spartakus Stuttgart 1919"
 
 def query_reichsanzeiger(query_terms: Union[str, Iterable[str]]):
     # If query_terms is of type list:
+    fess_logger.debug(f'Will try to call fess-API for query: {query_terms}')
     url = url_from_query_terms(query_terms)
     fess_logger.debug(f'Calling {url}')
     response = requests.get(url)
@@ -26,7 +28,7 @@ def query_reichsanzeiger(query_terms: Union[str, Iterable[str]]):
 
 
 def url_from_query_terms(query_terms: Union[str, Iterable[str]]):
-    if isinstance(query_terms, list) or isinstance(query_terms, tuple):
+    if isinstance(query_terms, list) or isinstance(query_terms, tuple) or isinstance(query_terms, np.ndarray):
         query_terms = '+'.join(query_terms)
     elif isinstance(query_terms, str):
         query_terms = query_terms.replace(' ', '+')

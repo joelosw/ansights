@@ -34,7 +34,8 @@ def create_graph(news_pages, physics=True, paper=None, num_keywords=6):
                      image='file:///Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_flyer.jpg')
     for i, page in enumerate(news_pages):
         net.add_node(i, size=10*len(page.keywords),
-                     title=page.url, label=page.name.split('-')[-1], shape='image', image='file:////Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_scan.jpg')
+                     title=page.name + '\n Keywords: \n' + '\n'.join(page.keywords), label=page.name.split('-')[-1], shape='image', image='file:////Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_scan.jpg')
+
     for i in range(len(news_pages)):
         for j in range(i):
             #similarity = similarities[i, j]
