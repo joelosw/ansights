@@ -4,14 +4,27 @@ from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
 
-@app.route('/api/startWorkflow', methods=['POST'])
+file = None
+
+@app.route('/api/startWorkflow', methods=['GET', 'POST'])
 def start_workflow():
+    
+    print('---- START WORKFLOW ----')
+    os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
+    
+    return jsonify({
+        'success': True,
+        'nodes': 'Received',
+        'edges': 'Received',
+        'groups': 'Received',
+    })
+    
+@app.route('/api/uploadImage', methods=['POST'])
+def upload_image():
     file = request.files.get('file')
     
     print(file)
-    
-    os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
-    
+
     return jsonify({
         'success': True,
         'file': 'Received'
