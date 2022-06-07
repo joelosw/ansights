@@ -27,6 +27,10 @@ HTML_PATH = os.path.join(
 # TODO: Include spacy NER if found, statistics on FP/FN of NER
 # TODO: Ask about limitations of FESS-API
 
+# TODO: Clusteer Colors
+# TODO: 10 newspaper-icons
+# TODO: Onclick -> Link öffnen
+
 
 def main(args: argparse):
     if not args.cache:

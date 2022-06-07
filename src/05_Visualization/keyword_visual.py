@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import webbrowser
 import os
-import cv2
+import random
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
@@ -29,12 +29,15 @@ def create_graph(news_pages, physics=True, paper=None, num_keywords=6):
     #similarities = calculate_similarity_matrix(news_pages, eps=0.1)
     net = Network(height='100%', width='75%')
     net.barnes_hut()
+    scan_images = os.listdir(os.path.join(repo_path, 'data', 'scan_examples'))
+    scan_paths = ['file://' + os.path.join(
+        repo_path, 'data', 'scan_examples', image) for image in scan_images]
     if not paper is None:
         net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image',
                      image='file:///Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_flyer.jpg')
     for i, page in enumerate(news_pages):
         net.add_node(i, size=10*len(page.keywords),
-                     title=page.name + '\n Keywords: \n' + '\n'.join(page.keywords), label=page.name.split('-')[-1], shape='image', image='file:////Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_scan.jpg')
+                     title=page.name + '\n Keywords: \n' + '\n'.join(page.keywords), label=page.name.split('-')[-1], shape='image', image=random.choice(scan_paths))
 
     for i in range(len(news_pages)):
         for j in range(i):
