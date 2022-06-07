@@ -98,8 +98,12 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
 
     for i, page in enumerate(news_pages):
         # Add in the end, so they are on top
+        if not color_keywords:
+            color = '#006d77'
+        else:
+            color = None
         net.add_edge(i, 'KEY', weight=len(page.keywords), value=len(
-            page.keywords), smooth=False, title=','.join(page.keywords))  # , color='#006d77')
+            page.keywords), smooth=False, title=','.join(page.keywords), color=color)
     return net
 
 
