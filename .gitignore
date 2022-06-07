@@ -7,3 +7,4 @@ venv_daVinci
 .vscode
 *.pkl
 launch.json
+AppVisualAnzeights/node_modules
