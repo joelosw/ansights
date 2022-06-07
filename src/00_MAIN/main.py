@@ -104,7 +104,7 @@ def main(args: argparse):
             PATH_NET=HTML_PATH)
         webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
     else:
-        net = create_graph(relations, paper=True)
+        net = create_graph(relations, color_keywords=True)
         net.show(HTML_PATH)
         webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
 

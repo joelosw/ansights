@@ -8,5 +8,6 @@ tessdata
 .DS_Store
 .vscode
 *.pkl
+*.html
 launch.json
 AppVisualAnzeights/node_modules
