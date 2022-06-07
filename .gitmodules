@@ -2,6 +2,6 @@
 	path = Reichsanzeiger-Repo
 	url = https://github.com/UB-Mannheim/Reichsanzeiger.git
 
-[submodule "VisualAnzeights"]
+[submodule "AppVisualAnzeights"]
 	path = AppVisualAnzeights
 	url = https://github.com/SimeonAllmendinger/AppVisualAnzeights.git

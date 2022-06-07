@@ -7,6 +7,7 @@ app = Flask(__name__)
 def get_current_time():
     return {'time': time.time()}
 
-@app.route('/api/news_graph')
-def get_current_news_graph():
+@app.route('/api/image', methods=['POST'])
+def start_main():
+    
     return send_file('src/05_Visualization/Models/VisualAnzeights.html')
