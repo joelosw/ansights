@@ -3,16 +3,7 @@ davinci-env2
 config/sql_credentials.txt
 **/__pycache__/**
 venv_daVinci
-tesseract
-tessdata
 .DS_Store
 .vscode
 *.pkl
 launch.json
-VisualAnzeights.html
-src/01_MAIN/__pycache__
-src/02_OCR/__pycache__
-src/03_GND/__pycache__
-src/04_Reichsanzeiger/__pycache__
-src/05_Visualization/__pycache__
-src/06_FLASK/__pycache__
