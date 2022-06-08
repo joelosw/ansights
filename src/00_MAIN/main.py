@@ -5,6 +5,7 @@ import pickle
 import webbrowser
 import time
 import logging
+from types import SimpleNamespace
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
@@ -17,7 +18,7 @@ if True:  # necesarry, so that auto-format does not move the import to top
     from build_newspaper_relations import build_relations, build_relations_with_synonyms, build_relations_async, build_relations_with_synonyms_async
     from news_page import News_Page
     from visualize_tfidf import VisAnz_Net
-    from keyword_visual import create_graph
+    from keyword_visual import create_graph, generate_graph_content
 logger = get_logger('MAIN')
 get_logger('ASYNC').setLevel(logging.INFO)
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
@@ -32,7 +33,7 @@ HTML_PATH = os.path.join(
 # TODO: Onclick -> Link öffnen
 
 
-def main(args: argparse):
+def main(args: argparse, return_graph=False):
     if not args.cache:
         ocr_text = get_string(args.file, lang='deu_frak')
         logger.info('OCR returned text: %s' % ocr_text)
@@ -98,15 +99,25 @@ def main(args: argparse):
             vis_relations['keyword'].append(next(iter(value.keywords)))
 
         data_keywords = ['test', 'test', 'test']
-        visAnz_net = VisAnz_Net(data_dict=vis_relations,
-                                data_keywords=data_keywords)
-        visAnz_net.show_net(
-            PATH_NET=HTML_PATH)
-        webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
+        net = VisAnz_Net(data_dict=vis_relations,
+                         data_keywords=data_keywords)
     else:
         net = create_graph(relations, color_keywords=True)
-        net.show(HTML_PATH)
+
+    if return_graph:
+        return net
+    else:
+        net.show_net(
+            PATH_NET=HTML_PATH)
         webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
+
+
+def main_for_flask(image, gnd: bool = True):
+    args = SimpleNamespace(cache=False, parallel=True,
+                           sample=30, keyvis=True, gnd=gnd)
+    net = main(args, return_graph=True)
+    nodes, edges, options = generate_graph_content(net)
+    return nodes, edges, options
 
 
 def parse_args():

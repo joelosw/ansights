@@ -1,28 +1,30 @@
 import sys
 import os
 from flask import Flask, request, render_template, jsonify
-
+import visanz
 app = Flask(__name__)
 
 file = None
 
+
 @app.route('/api/startWorkflow', methods=['GET', 'POST'])
 def start_workflow():
-    
+
     print('---- START WORKFLOW ----')
     os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
-    
+
     return jsonify({
         'success': True,
         'nodes': 'Received',
         'edges': 'Received',
         'groups': 'Received',
     })
-    
+
+
 @app.route('/api/uploadImage', methods=['POST'])
 def upload_image():
     file = request.files.get('file')
-    
+
     print(file)
 
     return jsonify({
@@ -30,9 +32,10 @@ def upload_image():
         'file': 'Received'
     })
 
+
 @app.route("/")
 def index():
-    return render_template('../../AppVisualAnzeights/public/index.html');   
+    return render_template('../../AppVisualAnzeights/public/index.html')
 
 
 if __name__ == "__main__":
