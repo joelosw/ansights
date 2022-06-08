@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
@@ -14,13 +15,20 @@ def start_workflow():
     
     return jsonify({
         'success': True,
-        'nodes': 'Received',
-        'edges': 'Received',
-        'groups': 'Received',
+        'nodes': [{'Received'}],
+        'edges': [{'Received'}],
+        'groups': [{'Received'}],
     })
+
+
+@app.route('/api/time')
+def get_current_time():
+    return {'time': time.time()}
+
     
 @app.route('/api/uploadImage', methods=['POST'])
 def upload_image():
+    global file
     file = request.files.get('file')
     
     print(file)
