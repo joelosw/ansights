@@ -20,3 +20,4 @@ asyncio
 opencv-python
 flask
 python-dotenv
+beautifulsoup4
