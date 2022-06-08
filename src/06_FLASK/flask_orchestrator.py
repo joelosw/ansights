@@ -2,7 +2,10 @@ import sys
 import os
 import time
 from flask import Flask, request, render_template, jsonify
-import visanz
+import visanz.main
+from visanz.main import main_for_flask
+import numpy as np
+from PIL import Image
 app = Flask(__name__)
 
 file = None
@@ -12,13 +15,17 @@ file = None
 def start_workflow():
 
     print('---- START WORKFLOW ----')
-    os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
-
+    global file
+    #os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
+    filestr = file.read()
+    npimg = np.fromstring(filestr, np.uint8)
+    img = Image.fromarray(npimg)
+    nodes, edges, options = main_for_flask(img)
     return jsonify({
         'success': True,
-        'nodes': [{'Received'}],
-        'edges': [{'Received'}],
-        'groups': [{'Received'}],
+        'nodes': nodes,
+        'edges': edges,
+        'groups': options,
     })
 
 

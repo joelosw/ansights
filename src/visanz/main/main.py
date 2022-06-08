@@ -38,7 +38,7 @@ HTML_PATH = os.path.join(
 
 def main(args: argparse, return_graph=False, image=None):
     if not args.cache:
-        if not image:
+        if image is None or isinstance(image, str):
             ocr_text = get_string(args.file, lang='deu_frak')
         else:
             ocr_text = get_string_from_image(image, lang='deu_frak')
@@ -121,9 +121,11 @@ def main(args: argparse, return_graph=False, image=None):
 def main_for_flask(image, gnd: bool = True):
     logger.info(f'main_for_flask got image of type {type(image)}')
     args = SimpleNamespace(cache=False, parallel=True,
-                           sample=30, keyvis=True, gnd=gnd)
-    net = main(args, return_graph=True)
+                           sample=30, keyvis=True, gnd=gnd, file=None)
+    net = main(args, return_graph=True, image=image)
     nodes, edges, options = generate_graph_content(net)
+    logger.info(
+        f'Main for Flask finished, shapes: nodes:{len(nodes)}, edges:{len(edges)}, options:{len(options)}')
     return nodes, edges, options
 
 
