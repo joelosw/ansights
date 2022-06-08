@@ -1,12 +1,16 @@
+from ast import NodeVisitor
+from flask import stream_with_context
 from pyvis.network import Network
 import sys
 import numpy as np
 import webbrowser
 import os
+import json
 import random
 from sklearn.manifold import MDS
 from sklearn.preprocessing import MinMaxScaler
 from bs4 import BeautifulSoup
+import re
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
@@ -111,22 +115,23 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
 def generate_graph_content(relations, color_keywords=True):
     net = create_graph(relations, color_keywords=color_keywords)
     soup = BeautifulSoup(net.generate_html())
-    str = soup.findAll('script')[1].string
-    str = str.replace(
-        "var container = document.getElementById('mynetwork');", "")
-    str = str.strip("drawGraph();\n\n")
-    str = str.replace("\n\n\n", "")
-    str = str.replace("    var edges;\n", "")
-    str = str.replace("    var nodes;\n", "")
-    str = str.replace("    var network; \n", "")
-    str = str.replace("    var container;\n", "")
-    str = str.replace("    var options, data;\n", "")
-    str = str.replace(
-        "function drawGraph() {", "function getGraphData(){ \n \t \t var edges, nodes, options, data; \n")
-    str = str.replace(
-        "network = new vis.Network(container, data, options);", "")
-    str = str.replace("return network",  "return [data,  options]")
-    return str
+    string = soup.findAll('script')[1].string
+    for line in string.split('\n'):
+        if 'nodes = ' in line:
+            nodes = line.split('([')[1]
+            nodes = nodes.split('])')[0]
+            nodes = '[' + nodes + ']'
+            nodes = json.loads(nodes)
+            print(nodes)
+        elif 'nodes = ' in line:
+            edges = line.split('([')[1]
+            edges = edges.split('])')[0]
+            edges = '[' + edges + ']'
+            nodes = json.loads(edges)
+            print(edges)
+
+    print(nodes)
+    return string
 
 
 def add_paper_to_net():
@@ -141,10 +146,11 @@ if __name__ == '__main__':
         logger.info(
             f'{relations} \n  ...loaded cached {len(relations)} relations:')
     random.seed(0)
-    relations = random.sample(relations, 30)
+    relations = random.sample(relations, 10)
     net = create_graph(relations, color_keywords=True)
-    print("---Result: ---- \n" +
-          generate_graph_content(relations=relations, color_keywords=True))
+    print(net.get_network_data())
+    # print("---Result: ---- \n" +
+    # generate_graph_content(relations=relations, color_keywords=True)  # )
     # net.show(os.path.join(repo_path, 'key_vis.html'))
     # webbrowser.open('file://' + os.path.join(repo_path,
     #                 'key_vis.html'), new=0, autoraise=True)
