@@ -6,6 +6,7 @@ import os
 import random
 from sklearn.manifold import MDS
 from sklearn.preprocessing import MinMaxScaler
+from bs4 import BeautifulSoup
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
@@ -107,6 +108,12 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     return net
 
 
+def generate_graph_content(relations, color_keywords=True):
+    net = create_graph(relations, color_keywords=True)
+    soup = BeautifulSoup(net.generate_html())
+    return soup.findAll('script')[1].string
+
+
 def add_paper_to_net():
     pass
 
@@ -121,7 +128,7 @@ if __name__ == '__main__':
     random.seed(0)
     relations = random.sample(relations, 30)
     net = create_graph(relations, color_keywords=True)
-    # print(net.generate_html())
-    net.show(os.path.join(repo_path, 'key_vis.html'))
-    webbrowser.open('file://' + os.path.join(repo_path,
-                    'key_vis.html'), new=0, autoraise=True)
+    print(generate_graph_content(relations=relations, color_keywords=True))
+    # net.show(os.path.join(repo_path, 'key_vis.html'))
+    # webbrowser.open('file://' + os.path.join(repo_path,
+    #                 'key_vis.html'), new=0, autoraise=True)
