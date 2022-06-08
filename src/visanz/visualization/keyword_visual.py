@@ -15,8 +15,8 @@ sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
 if True:  # necesarry, so that auto-format does not move the import to top
-    from src.utils.__RepoPath__ import repo_path
-    from src.utils.logger import get_logger
+    from src.visanz.utils.__RepoPath__ import repo_path
+    from src.visanz.utils.logger import get_logger
     from news_page import News_Page
 logger = get_logger('KEY_VIS')
 

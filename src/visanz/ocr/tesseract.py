@@ -8,8 +8,8 @@ import os
 sys.path.append('./')
 sys.path.append('./../..')
 if True:
-    from src.utils.__RepoPath__ import repo_path
-    from src.utils.logger import get_logger
+    from src.visanz.utils.__RepoPath__ import repo_path
+    from src.visanz.utils.logger import get_logger
 logger = get_logger('OCR')
 
 # 'data/2013_0473_031__ansicht03.tif'
@@ -21,6 +21,15 @@ def get_string(IMAGE_PATH, lang='deu-frak'):
     # Simple image to string
     text = pytesseract.image_to_string(
         Image.open(IMAGE_PATH), lang=lang)
+
+    logger.debug(f'Tesseract extracted: \n {text}')
+
+    return text
+
+
+def get_string_from_image(image, lang='deu-frak'):
+    # Simple image to string
+    text = pytesseract.image_to_string(image, lang=lang)
 
     logger.debug(f'Tesseract extracted: \n {text}')
 

@@ -6,7 +6,7 @@ sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
 if True:
-    from src.utils.logger import get_logger
+    from src.visanz.utils.logger import get_logger
 logger = get_logger('REL')
 
 

@@ -1,5 +1,5 @@
 
-from src.utils.logger import get_logger
+from src.visanz.utils.logger import get_logger
 import requests
 from typing import Text, Union, Iterable, Dict, Any, Type, List
 from datetime import datetime

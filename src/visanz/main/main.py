@@ -1,4 +1,3 @@
-import sys
 import os
 import argparse
 import pickle
@@ -6,19 +5,23 @@ import webbrowser
 import time
 import logging
 from types import SimpleNamespace
+import sys
 sys.path.append('./')
-sys.path.append('./../')
+sys.path.append('./..')
 sys.path.append('./../..')
-if True:  # necesarry, so that auto-format does not move the import to top
-    from src.utils.__RepoPath__ import repo_path
-    from src.utils.logger import get_logger
-    from tesseract import get_string
-    from fuse_keywords import fuse
-    from lobid_api import get_gnd_keywordRelations, df_to_dict
-    from build_newspaper_relations import build_relations, build_relations_with_synonyms, build_relations_async, build_relations_with_synonyms_async
-    from news_page import News_Page
-    from visualize_tfidf import VisAnz_Net
-    from keyword_visual import create_graph, generate_graph_content
+
+if True:
+    from src.visanz.visualization.visualize_tfidf import VisAnz_Net
+    from src.visanz.reichsanzeiger.news_page import News_Page
+    from src.visanz.reichsanzeiger.build_newspaper_relations import build_relations, build_relations_with_synonyms, build_relations_async, build_relations_with_synonyms_async
+    from src.visanz.gnd.lobid_api import get_gnd_keywordRelations, df_to_dict
+    from src.visanz.ner.fuse_keywords import fuse
+    from src.visanz.ocr.tesseract import get_string, get_string_from_image
+    from src.visanz.utils.logger import get_logger
+    from src.visanz.utils.__RepoPath__ import repo_path
+    from src.visanz.visualization.keyword_visual import create_graph, generate_graph_content
+
+
 logger = get_logger('MAIN')
 get_logger('ASYNC').setLevel(logging.INFO)
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
@@ -33,9 +36,12 @@ HTML_PATH = os.path.join(
 # TODO: Onclick -> Link öffnen
 
 
-def main(args: argparse, return_graph=False):
+def main(args: argparse, return_graph=False, image=None):
     if not args.cache:
-        ocr_text = get_string(args.file, lang='deu_frak')
+        if not image:
+            ocr_text = get_string(args.file, lang='deu_frak')
+        else:
+            ocr_text = get_string_from_image(image, lang='deu_frak')
         logger.info('OCR returned text: %s' % ocr_text)
         keywords_with_score = fuse(ocr_text, max_nouns=4, max_verbs=3)
         keywords = list(keywords_with_score.keys())
@@ -113,6 +119,7 @@ def main(args: argparse, return_graph=False):
 
 
 def main_for_flask(image, gnd: bool = True):
+    logger.info(f'main_for_flask got image of type {type(image)}')
     args = SimpleNamespace(cache=False, parallel=True,
                            sample=30, keyvis=True, gnd=gnd)
     net = main(args, return_graph=True)

@@ -6,7 +6,7 @@ from enum import Enum
 
 sys.path.append('./')
 if True:
-    from src.utils.__RepoPath__ import repo_path
+    from src.visanz.utils.__RepoPath__ import repo_path
 nlp = spacy.load("de_core_news_md")
 
 
