@@ -72,17 +72,15 @@ async def query_reichsanzeiger_worker(query_terms, session, news_page_collection
                 # result_json = await result.text()
                 logger.debug(
                     f'Thread {url} result: {result_json["response"].keys()}')
-                
-                # TODO: Second look on new approach
-                result = result_json['response']['result']
-                current_url = result['url']
-                news_page_collection.handle_entry(
-                current_url, query_term)
-                    
         except Exception as e:
-            logger.warning(
+            logger.debug(
                 "Unable to get url {} due to {}.".format(url, e.__class__))
-        
+        for result in result_json['response']['result']:
+            current_url = result['url']
+            news_page_collection.handle_entry(
+                current_url, query_term)
+
+
 async def main(query_terms, news_page_collection):
     async with aiohttp.ClientSession() as session:
         workers = [query_reichsanzeiger_asnyc(

@@ -23,7 +23,7 @@ if True:
 
 
 logger = get_logger('MAIN')
-get_logger('ASYNC').setLevel(logging.DEBUG)
+get_logger('ASYNC').setLevel(logging.INFO)
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 HTML_PATH = os.path.join(
     repo_path, 'src/05_Visualization/Models/VisualAnzeights.html')
