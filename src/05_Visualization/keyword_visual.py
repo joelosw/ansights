@@ -114,24 +114,8 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
 
 def generate_graph_content(relations, color_keywords=True):
     net = create_graph(relations, color_keywords=color_keywords)
-    soup = BeautifulSoup(net.generate_html())
-    string = soup.findAll('script')[1].string
-    for line in string.split('\n'):
-        if 'nodes = ' in line:
-            nodes = line.split('([')[1]
-            nodes = nodes.split('])')[0]
-            nodes = '[' + nodes + ']'
-            nodes = json.loads(nodes)
-            print(nodes)
-        elif 'nodes = ' in line:
-            edges = line.split('([')[1]
-            edges = edges.split('])')[0]
-            edges = '[' + edges + ']'
-            nodes = json.loads(edges)
-            print(edges)
-
-    print(nodes)
-    return string
+    nodes, edges, _, _, _, options = net.get_network_data()
+    return nodes, edges, options
 
 
 def add_paper_to_net():
@@ -148,9 +132,6 @@ if __name__ == '__main__':
     random.seed(0)
     relations = random.sample(relations, 10)
     net = create_graph(relations, color_keywords=True)
-    print(net.get_network_data())
-    # print("---Result: ---- \n" +
-    # generate_graph_content(relations=relations, color_keywords=True)  # )
-    # net.show(os.path.join(repo_path, 'key_vis.html'))
-    # webbrowser.open('file://' + os.path.join(repo_path,
-    #                 'key_vis.html'), new=0, autoraise=True)
+    net.show(os.path.join(repo_path, 'key_vis.html'))
+    webbrowser.open('file://' + os.path.join(repo_path,
+                    'key_vis.html'), new=0, autoraise=True)
