@@ -8,7 +8,7 @@ from collections import defaultdict
 
 sys.path.append('./')
 if True:
-    from src.utils.__RepoPath__ import repo_path
+    from src.visanz.utils.__RepoPath__ import repo_path
 nlp = spacy.load("de_core_news_md")
 
 
@@ -128,13 +128,14 @@ def get_gnd_keywordRelations(keywords: list, max_query_items=10, print_output=Tr
                 if not as_list and remove_duplicates:
                     df[keyword][0][json_key] = list(
                         dict.fromkeys(df[keyword][0][json_key]))
-                
-                df[keyword][0][json_key] = [word.split(' ')[0].strip(';/:"') for word in df[keyword][0][json_key]]
+
+                df[keyword][0][json_key] = [word.split(' ')[0].strip(
+                    ';/:"') for word in df[keyword][0][json_key]]
 
         if as_list:
             keyword_relation_list = get_relevant_relations_as_list(df[keyword][0], keyword=keyword,
-                                                                verbose=verbose,
-                                                                max_keyword_relations=max_keyword_relations)
+                                                                   verbose=verbose,
+                                                                   max_keyword_relations=max_keyword_relations)
             df[keyword][0] = keyword_relation_list
 
         if print_output:
@@ -156,31 +157,31 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
         :param verbose=False: Used to print out relevant information for debugging.
         :return: A list.
     """
-    
+
     keyword_token = nlp(keyword)
     keyword_relation_set = set()
     keyword_similarities = []
-    
+
     # Convert dictionary to simple list
     for key, relation_list in df.items():
 
         for word in relation_list:
             if word != keyword:
                 keyword_relation_set.add(word)
-    
+
     if len(keyword_relation_set) > 0:
-    
+
         for i, word in enumerate(keyword_relation_set):
             keyword_similarities.append(keyword_token.similarity(nlp(word)))
-        
-        
+
         for k in range(3):
             try:
-                keyword_relation_list = list(zip(*sorted(zip(keyword_relation_set, keyword_similarities), reverse=True)[:max_keyword_relations]))[0]
+                keyword_relation_list = list(zip(
+                    *sorted(zip(keyword_relation_set, keyword_similarities), reverse=True)[:max_keyword_relations]))[0]
                 break
             except IndexError:
                 max_keyword_relations -= 1
-    
+
     else:
         keyword_relation_list = ()
 

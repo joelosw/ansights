@@ -6,7 +6,7 @@ import sys
 sys.path.append('./')
 print(sys.path)
 if True:
-    from src.utils.__RepoPath__ import repo_path
+    from src.visanz.utils.__RepoPath__ import repo_path
 
 
 kw_extractor = yake.KeywordExtractor()

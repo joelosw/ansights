@@ -15,8 +15,8 @@ sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
 if True:  # necesarry, so that auto-format does not move the import to top
-    from src.utils.__RepoPath__ import repo_path
-    from src.utils.logger import get_logger
+    from src.visanz.utils.__RepoPath__ import repo_path
+    from src.visanz.utils.logger import get_logger
     from news_page import News_Page
 logger = get_logger('KEY_VIS')
 
@@ -112,9 +112,8 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     return net
 
 
-def generate_graph_content(relations, color_keywords=True):
-    net = create_graph(relations, color_keywords=color_keywords)
-    nodes, edges, _, _, _, options = net.get_network_data()
+def generate_graph_content(network):
+    nodes, edges, _, _, _, options = network.get_network_data()
     return nodes, edges, options
 
 

@@ -6,11 +6,12 @@ import logging
 import sys
 sys.path.append('./')
 if True:
-    from src.utils.__RepoPath__ import repo_path
-    from src.utils.logger import get_logger
+    from src.visanz.utils.__RepoPath__ import repo_path
+    from src.visanz.utils.logger import get_logger
 
 
 ner_logger = get_logger('NER')
+
 
 def fuse(text: str, max_nouns: int = None, max_verbs: int = None):
     scores = dict(extract_keyword_score(text))
@@ -57,7 +58,8 @@ def fuse(text: str, max_nouns: int = None, max_verbs: int = None):
                     f'Could only get {num_prop + num_nouns} nouns of the wanted {max_nouns}')
         words_with_scores = {**words_with_scores, **dict(candidates)}
     else:
-        words_with_scores ={**words_with_scores, **dict(prop_nouns), **dict(nouns)}
+        words_with_scores = {**words_with_scores,
+                             **dict(prop_nouns), **dict(nouns)}
 
     if max_verbs:
         verbs.sort(key=lambda x: x[1], reverse=False)

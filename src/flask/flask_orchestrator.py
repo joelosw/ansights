@@ -1,8 +1,9 @@
 import sys
 import os
-import time
 from flask import Flask, request, render_template, jsonify
-import visanz
+sys.path.append('./')
+sys.path.append('./../..')
+from src.visanz.main.main import main_for_flask
 app = Flask(__name__)
 
 file = None
@@ -12,19 +13,14 @@ file = None
 def start_workflow():
 
     print('---- START WORKFLOW ----')
-    os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
-
+    #os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
+    nodes, edges, options = main_for_flask(file)
     return jsonify({
         'success': True,
-        'nodes': [{'Received'}],
-        'edges': [{'Received'}],
-        'groups': [{'Received'}],
+        'nodes': nodes,
+        'edges': edges,
+        'options': options,
     })
-
-
-@app.route('/api/time')
-def get_current_time():
-    return {'time': time.time()}
 
 
 @app.route('/api/uploadImage', methods=['POST'])
