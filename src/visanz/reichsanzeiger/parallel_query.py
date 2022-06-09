@@ -10,7 +10,7 @@ sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
 if True:
-    from src.visanz.utils.logger import get_logger
+    from utils.logger import get_logger
     from synonyms_iterator import synonyms_iterator_helper
 logger = get_logger('ASYNC')
 

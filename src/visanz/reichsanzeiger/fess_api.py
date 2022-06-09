@@ -1,5 +1,3 @@
-
-from src.visanz.utils.logger import get_logger
 import requests
 from typing import Text, Union, Iterable, Dict, Any, Type, List
 from datetime import datetime
@@ -9,6 +7,8 @@ import numpy as np
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
+if True:
+    from src.visanz.utils.logger import get_logger
 fess_logger = get_logger('FESS')
 JSON = Union[Dict[str, Any], List[Any], int, str, float, bool, Type[None]]
 base_url = 'https://digi.bib.uni-mannheim.de/fess/json/?q='
