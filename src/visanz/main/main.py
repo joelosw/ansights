@@ -6,6 +6,7 @@ import time
 import logging
 from types import SimpleNamespace
 import sys
+
 sys.path.append('./')
 sys.path.append('./..')
 sys.path.append('./../..')
@@ -26,14 +27,15 @@ logger = get_logger('MAIN')
 get_logger('ASYNC').setLevel(logging.DEBUG)
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 HTML_PATH = os.path.join(
-    repo_path, 'src/05_Visualization/Models/VisualAnzeights.html')
+    repo_path, 'src/visanz/visualization/VisualAnzeights.html')
 # TODO: Check wordnet for cleaning OCR  text (part of nltk?) -> Don't lemmatize
 # TODO: Include spacy NER if found, statistics on FP/FN of NER
 # TODO: Ask about limitations of FESS-API
 
-# TODO: Clusteer Colors
-# TODO: 10 newspaper-icons
-# TODO: Onclick -> Link öffnen
+# TODO: Fit Clusteer Colors to colorr scheme
+#TODO: nodes images are not shown yet, since file path only fits Joels Path
+#TODO: options format
+#TODO: 
 
 
 def main(args: argparse, return_graph=False, image=None):
