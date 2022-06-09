@@ -71,8 +71,14 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image',
                  image='file:///Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_flyer.jpg')
     for i, page in enumerate(news_pages):
+        kwargs = dict(label=page.name.split('-')[-1],
+        title=page.name + '\n Keywords: \n' + '\n'.join(page.keywords), 
+        shape='image', 
+        image=random.choice(scan_paths), 
+        color=f'rgba{tuple(colors[i,:])+(0.7,)}',
+        url=page.url,)
         net.add_node(i, size=10*len(page.keywords),
-                     title=page.name + '\n Keywords: \n' + '\n'.join(page.keywords), label=page.name.split('-')[-1], shape='image', image=random.choice(scan_paths), color=f'rgba{tuple(colors[i,:])+(0.7,)}')
+                     **kwargs)
 
     for i in range(len(news_pages)):
         for j in range(i):
@@ -117,10 +123,6 @@ def generate_graph_content(network):
     return nodes, edges, options
 
 
-def add_paper_to_net():
-    pass
-
-
 if __name__ == '__main__':
     import pickle
     import random
@@ -131,6 +133,7 @@ if __name__ == '__main__':
     random.seed(0)
     relations = random.sample(relations, 10)
     net = create_graph(relations, color_keywords=True)
+    print(generate_graph_content(net))
     net.show(os.path.join(repo_path, 'key_vis.html'))
     webbrowser.open('file://' + os.path.join(repo_path,
                     'key_vis.html'), new=0, autoraise=True)
