@@ -2,15 +2,18 @@ from visanz.main.main import main_for_flask
 from PIL import Image
 import cv2
 import numpy as np
+import requests
 import sys
 import time
 from flask import Flask, request, render_template, jsonify
 sys.path.append('./')
-sys.path.append('./../..')
+sys.path.append('./../../')
+
 app = Flask(__name__)
 
 img_file = None
 npimg = None
+queryOptions = {'gnd': False}
 
 
 @app.route('/api/startWorkflow', methods=['GET', 'POST'])
@@ -19,8 +22,9 @@ def start_workflow():
     print('---- START WORKFLOW ----')
     #os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
     global file
-    global npimg
+    global queryOptions
     nodes, edges, options = main_for_flask(image=file)
+
     return jsonify({
         'success': True,
         'nodes': nodes,
@@ -45,6 +49,17 @@ def upload_image():
     return jsonify({
         'success': True,
         'file': 'Received'
+    })
+
+
+@app.route('/api/uploadGnd', methods=['POST'])
+def upload_Gnd():
+    global queryOptions
+    queryOptions['gnd'] = request.get_json(force=True)['gnd']
+
+    return jsonify({
+        'success': True,
+        'gnd': queryOptions['gnd']
     })
 
 

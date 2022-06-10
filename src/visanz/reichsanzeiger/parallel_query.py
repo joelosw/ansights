@@ -4,15 +4,52 @@ import numpy as np
 from threading import Lock
 from fess_api import url_from_query_terms
 from news_page import News_Page
-import sys
+import sys, os
 import time
+import ssl
+import stat
+import subprocess
+import sys
+
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
+
 if True:
     from utils.logger import get_logger
     from synonyms_iterator import synonyms_iterator_helper
 logger = get_logger('ASYNC')
+
+def ssl_certifi_loader():
+    
+    STAT_0o775 = ( stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR
+                | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP
+                | stat.S_IROTH |                stat.S_IXOTH )
+
+    openssl_dir, openssl_cafile = os.path.split(
+        ssl.get_default_verify_paths().openssl_cafile)
+
+    print(" -- pip install --upgrade certifi")
+    subprocess.check_call([sys.executable,
+        "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"])
+
+    import certifi
+
+    # change working directory to the default SSL directory
+    os.chdir(openssl_dir)
+    relpath_to_certifi_cafile = os.path.relpath(certifi.where())
+    print(" -- removing any existing file or link")
+    try:
+        os.remove(openssl_cafile)
+    except FileNotFoundError:
+        pass
+    print(" -- creating symlink to certifi certificate bundle")
+    os.symlink(relpath_to_certifi_cafile, openssl_cafile)
+    print(" -- setting permissions")
+    os.chmod(openssl_cafile, STAT_0o775)
+    print(" -- update complete")
+    
+# ssl_certifi_loader()
 
 
 class NewsPageCollection():
@@ -32,7 +69,7 @@ class NewsPageCollection():
             self.collection[url].add_keywords(keywords)
         self.lock.release()
 
-
+     
 def parallel_query(query_terms: list, num_workers: int = None, synonyms_helper: synonyms_iterator_helper = None) -> dict:
     news_page_collection = NewsPageCollection(synonyms_helper)
     if num_workers:
@@ -49,14 +86,22 @@ async def query_reichsanzeiger_asnyc(query_term, session, news_page_collection):
     url = url_from_query_terms(query_term)
     logger.debug(f'Thread Quering: {url}')
     try:
-        async with session.get(url=url) as response:
+        async with session.get(url=url, allow_redirects=False) as response:
             result_json = await response.json()
             # result_json = await result.text()
             logger.debug(
                 f'Thread {url} result: {result_json["response"].keys()}')
+            
+            # TODO: Second look on new approach
+            #result = result_json['response']['result']
+            #current_url = result['url']
+            #news_page_collection.handle_entry(
+            #current_url, query_term)
+
     except Exception as e:
         logger.debug(
             "Unable to get url {} due to {}.".format(url, e.__class__))
+        
     for result in result_json['response']['result']:
         current_url = result['url']
         news_page_collection.handle_entry(current_url, query_term)
@@ -67,20 +112,26 @@ async def query_reichsanzeiger_worker(query_terms, session, news_page_collection
         url = url_from_query_terms(query_term)
         logger.debug(f'Thread Quering: {url}')
         try:
-            async with session.get(url=url) as response:
+            async with session.get(url=url, allow_redirects=False) as response:
                 result_json = await response.json()
                 # result_json = await result.text()
                 logger.debug(
                     f'Thread {url} result: {result_json["response"].keys()}')
+                
+                # TODO: Second look on new approach
+                #result = result_json['response']['result']
+                #current_url = result['url']
+                #news_page_collection.handle_entry(
+                #current_url, query_term)
+                    
         except Exception as e:
-            logger.debug(
+            logger.warning(
                 "Unable to get url {} due to {}.".format(url, e.__class__))
+        
         for result in result_json['response']['result']:
             current_url = result['url']
-            news_page_collection.handle_entry(
-                current_url, query_term)
-
-
+            news_page_collection.handle_entry(current_url, query_term)
+        
 async def main(query_terms, news_page_collection):
     async with aiohttp.ClientSession() as session:
         workers = [query_reichsanzeiger_asnyc(

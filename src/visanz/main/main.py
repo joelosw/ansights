@@ -6,6 +6,7 @@ import time
 import logging
 from types import SimpleNamespace
 import sys
+
 sys.path.append('./')
 sys.path.append('./..')
 sys.path.append('./../..')
@@ -26,7 +27,8 @@ logger = get_logger('MAIN')
 get_logger('ASYNC').setLevel(logging.DEBUG)
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 HTML_PATH = os.path.join(
-    repo_path, 'src/05_Visualization/Models/VisualAnzeights.html')
+    repo_path, 'src/visanz/visualization/VisualAnzeights.html')
+
 
 
 def main(args: argparse, return_graph=False, image=None):

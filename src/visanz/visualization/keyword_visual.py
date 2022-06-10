@@ -1,5 +1,3 @@
-from ast import NodeVisitor
-from flask import stream_with_context
 from pyvis.network import Network
 import sys
 import numpy as np
@@ -68,7 +66,7 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     scan_images = os.listdir(os.path.join(repo_path, 'data', 'scan_examples'))
     scan_paths = ['file://' + os.path.join(
         repo_path, 'data', 'scan_examples', image) for image in scan_images]
-    net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image',
+    net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image', fixed=True,
                  image='file:///Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_flyer.jpg')
     for i, page in enumerate(news_pages):
         kwargs = dict(label=page.name.split('-')[-1],
@@ -92,13 +90,17 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
             value = similarity
             length = int(100*(1-jacc)) + 1
             if similarity > 0:
-                kwargs = dict(smooth=False,
-                              title=',\n'.join(
-                                  tuple(common_words)),
-                              weight=weight,
-                              value=value,
-                              length=length
-                              )
+                kwargs = dict(smooth={
+                    'enabled': True,
+                    'type': "continuos",
+                    'roundness': 0.4
+                },
+                    title=',\n'.join(
+                    tuple(common_words)),
+                    weight=weight,
+                    value=value,
+                    length=length
+                )
 
                 if not color_keywords:
                     # Use default colors instead of inheritance
@@ -120,6 +122,9 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
 
 def generate_graph_content(network):
     nodes, edges, _, _, _, options = network.get_network_data()
+    print(nodes)
+    print(edges)
+    print(options)
     return nodes, edges, options
 
 
