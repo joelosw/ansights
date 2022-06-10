@@ -65,16 +65,17 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     net.barnes_hut()
     scan_images = os.listdir(os.path.join(repo_path, 'data', 'scan_examples'))
     scan_paths = ['file://' + os.path.join(
-        repo_path, 'data', 'scan_examples', image) for image in scan_images]
+        repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', image) for image in scan_images]
     net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image', fixed=True,
-                 image='file:///Users/joel/Library/CloudStorage/OneDrive-Personal/_UNI/SS22/daVinci/data/example_flyer.jpg')
+                 image='file://' + os.path.join(repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', 'example_flyer.jpg'))
     for i, page in enumerate(news_pages):
         kwargs = dict(label=page.name.split('-')[-1],
-        title=page.name + '\n Keywords: \n' + '\n'.join(page.keywords), 
-        shape='image', 
-        image=random.choice(scan_paths), 
-        color=f'rgba{tuple(colors[i,:])+(0.7,)}',
-        url=page.url,)
+                      title=page.name + '\n Keywords: \n' +
+                      '\n'.join(page.keywords),
+                      shape='image',
+                      image=random.choice(scan_paths),
+                      color=f'rgba{tuple(colors[i,:])+(0.7,)}',
+                      url=page.url,)
         net.add_node(i, size=10*len(page.keywords),
                      **kwargs)
 
