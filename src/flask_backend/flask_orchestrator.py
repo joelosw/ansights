@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 img_file = None
 npimg = None
-queryOptions = {'gnd': False}
+queryOptions = {'gnd': False, 'date': None}
 
 
 @app.route('/api/startWorkflow', methods=['GET', 'POST'])
@@ -51,6 +51,15 @@ def upload_image():
         'file': 'Received'
     })
 
+@app.route('/api/uploadDate', methods=['POST'])
+def upload_Date():
+    global queryOptions
+    queryOptions['date'] = request.get_json(force=True)['date']
+
+    return jsonify({
+        'success': True,
+        'date': queryOptions['date']
+    })
 
 @app.route('/api/uploadGnd', methods=['POST'])
 def upload_Gnd():
