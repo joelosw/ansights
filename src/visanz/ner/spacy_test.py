@@ -30,6 +30,14 @@ def extract_nouns_and_verbs(text):
     return result
 
 
+def extract_ner(text):
+    analyzed = nlp(text)
+    result = {}
+    for word in analyzed.ents:
+        result[word.text] = word.label_
+    return result
+
+
 if __name__ == '__main__':
     with open(os.path.join(repo_path, 'data', 'arbeiter_aufruf_OCR_uncleaned.txt'), 'r') as f:
         text = f.read()

@@ -30,14 +30,13 @@ HTML_PATH = os.path.join(
     repo_path, 'src/visanz/visualization/VisualAnzeights.html')
 
 
-
 def main(args: argparse, return_graph=False, image=None):
     if not args.cache:
         if image is None or isinstance(image, str):
             ocr_text = get_string(args.file, lang='deu_frak')
         else:
             ocr_text = get_string_from_image(image, lang='deu_frak')
-        logger.info('OCR returned text: %s' % ocr_text)
+        logger.info('OCR returned text: \n %s' % ocr_text)
         keywords_with_score = fuse(ocr_text, max_nouns=4, max_verbs=3)
         keywords = list(keywords_with_score.keys())
         logger.info(f'Extracted Keywords: {keywords}')
