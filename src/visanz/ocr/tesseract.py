@@ -15,21 +15,23 @@ logger = get_logger('OCR')
 # 'data/2013_0473_031__ansicht03.tif'
 # 'data/2013_0473_029__ansicht01.tif'
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
+tessdata_dir_config = r'--tessdata-dir "{}/data/tessdata"'.format(repo_path)
 
 
 def get_string(IMAGE_PATH, lang='deu_frak'):
     # Simple image to string
     text = pytesseract.image_to_string(
-        Image.open(IMAGE_PATH), lang=lang)
+        Image.open(IMAGE_PATH), lang=lang, config=tessdata_dir_config)
 
     logger.debug(f'Tesseract extracted: \n {text}')
 
     return text
 
 
-def get_string_from_image(image, lang='deu-frak'):
+def get_string_from_image(image, lang='deu_frak'):
     # Simple image to string
-    text = pytesseract.image_to_string(image, lang=lang)
+    text = pytesseract.image_to_string(
+        image, lang=lang, config=tessdata_dir_config)
 
     logger.debug(f'Tesseract extracted: \n {text}')
 
@@ -68,17 +70,15 @@ def enhance_text(spell, text_cleaned, debug=False):
     return text_preprrocessed
 
 
-def get_text_dict(languages=['deu_frak'], IMAGE_PATH=TEST_PATH, debug=False):
+def get_text_dict(languages=['deu_frak'], IMAGE_PATH=TEST_PATH):
     text_strings = {}
     for lang in languages:
         logger.debug(f'===== LANGUAGE: {lang} =========')
-        text = get_string(IMAGE_PATH=IMAGE_PATH, lang=lang, debug=debug)
+        text = get_string(IMAGE_PATH=IMAGE_PATH, lang=lang)
         logger.debug(f'----Pure Text----- \n {text}')
-        text_cleaned = clean_text(text)
-        logger.debug(f'----Cleaned Text----- \n {text_cleaned}')
         spell = init_SpellChecker()
         text_preprocessed = enhance_text(
-            spell=spell, text_cleaned=text_cleaned, debug=debug)
+            spell=spell, text_cleaned=text)
         logger.debug(f'----Final Text----- \n {text_preprocessed}')
         text_strings[lang] = text_preprocessed
 
@@ -87,4 +87,4 @@ def get_text_dict(languages=['deu_frak'], IMAGE_PATH=TEST_PATH, debug=False):
 
 if __name__ == '__main__':
     get_text_dict(
-        languages=['deu_frak'], IMAGE_PATH=TEST_PATH, debug=False)
+        languages=['deu_frak'], IMAGE_PATH=TEST_PATH)

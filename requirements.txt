@@ -18,6 +18,7 @@ pyvis
 aiohttp
 asyncio
 opencv-python
+pytesseract
 flask
 python-dotenv
 beautifulsoup4

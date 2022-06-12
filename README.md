@@ -1,30 +1,36 @@
 [Description of the Dataset on the Coding daVinci Website](https://codingdavinci.de/daten/deutscher-reichsanzeiger-und-preussischer-staatsanzeiger)
 
-# Setup The Repo
+# Visual Anzeights
+Welcome to our Coding daVinci repository. Please don't judge us on the current state of the Code.
+We  know it is very messy and not well documented, but we are working on that.
+This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](AppVisualAnzeights)
+
+## Setup The Repo
 1. Clone this repo
 2. 
     ```
     git submodule update --init --recursive
     ```
-3. 
-    Change your Name/Passwd in [config/sql_credentials.txt](config/sql_credentials.txt) and execute
-    ``` bash
-    git update-index --assume-unchanged config/sql_credentials.txt
-    ```
-    so that they are not tracked and uploaded to GitHub 
-
-
-4. Create a venv/ conda env and enter it
-5. 
+3. Create a venv/ conda env and enter it
+4. 
     ```
     python3 -m pip install -r requirements.txt
     ```
+5.
+    ```
+    python -m spacy download de_core_news_md
+    ```
+## Runt the flask app
+1. 
+    ```
+    cd src/flask_backend
+    ```
+2. 
+    ```
+    python3 -m flask run
+    ```
 
-## Using NER with Spacy:
-```
-python -m spacy download de_core_news_md
-```
-
+# Deprercatwed Below
 ## Get the SQL Database:
 1. Install MariaDB \[[Windows](https://www.mariadbtutorial.com/getting-started/install-mariadb/) | [Arch](https://wiki.archlinux.org/title/MariaDB)\]
 
