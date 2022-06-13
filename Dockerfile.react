@@ -4,10 +4,14 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY AppVisualAnzeights/package.json ./
 COPY AppVisualAnzeights/src ./src
 COPY AppVisualAnzeights/public ./public
-RUN yarn install
-RUN yarn build
+# RUN yarn install
+# RUN yarn build
+RUN npm install
+# RUN npm audit fix --force
+RUN npm install react-dropdown-date
+CMD npm start
 
-# Build step #2: build an nginx container
-FROM nginx:stable-alpine
-COPY --from=build-step /app/build /usr/share/nginx/html
-COPY AppVisualAnzeights/nginx.default.conf /etc/nginx/conf.d/default.conf
+# # Build step #2: build an nginx container
+# FROM nginx:stable-alpine
+# COPY --from=build-step /app/build /usr/share/nginx/html
+# COPY AppVisualAnzeights/nginx.default.conf /etc/nginx/conf.d/default.conf
