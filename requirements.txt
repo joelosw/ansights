@@ -1,12 +1,9 @@
-mysql-connector-python
-configparser
 requests
 bs4
 lxml
 spacy
 html2text
 pandas
-cleantext
 pyspellchecker
 textblob
 tqdm
@@ -17,8 +14,8 @@ pickl
 pyvis
 aiohttp
 asyncio
-opencv-python
 pytesseract
+opencv-python
 flask
 python-dotenv
 beautifulsoup4

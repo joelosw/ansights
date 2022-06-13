@@ -1,7 +1,9 @@
 FROM python:3.9
 RUN apt-get update
 RUN apt-get install git -y
-RUN git clone https://github.com/joelosw/VisualAnzeights /app
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+# RUN git clone https://github.com/joelosw/VisualAnzeights /app
+COPY . /app
 WORKDIR /app
 RUN cd /app && git submodule update --init --recursive
 RUN pip3 install -r requirements.txt
