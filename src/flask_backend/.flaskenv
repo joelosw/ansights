@@ -1,2 +1,3 @@
 FLASK_APP=flask_orchestrator.py
 FLASK_ENV=development
+FLASK_DEBUG=0

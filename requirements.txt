@@ -19,5 +19,5 @@ opencv-python
 flask
 python-dotenv
 beautifulsoup4
-.
+python-dotenv
 werkzeug
