@@ -3,7 +3,7 @@
 # Visual Anzeights
 Welcome to our Coding daVinci repository. Please don't judge us on the current state of the Code.
 We  know it is very messy and not well documented, but we are working on that.
-This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](AppVisualAnzeights)
+This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](https://github.com/SimeonAllmendinger/AppVisualAnzeights)
 
 ## Setup The Repo
 1. Clone this repo
@@ -30,7 +30,7 @@ This Repository is the Backend of our project, providing a flask application tha
     python3 -m flask run
     ```
 
-# Deprercatwed Below
+# Deprercated Below
 ## Get the SQL Database:
 1. Install MariaDB \[[Windows](https://www.mariadbtutorial.com/getting-started/install-mariadb/) | [Arch](https://wiki.archlinux.org/title/MariaDB)\]
 
