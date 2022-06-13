@@ -108,7 +108,7 @@ async def query_reichsanzeiger_asnyc(query_term, session, news_page_collection):
             current_url = result['url']
             news_page_collection.handle_entry(current_url, query_term)
     except (KeyError, UnboundLocalError) as e:
-        logger.warning(f'No result in query from url: {url}...: \n {result}')
+        logger.warning(f'No result in query from url: {url}')
 
 
 async def query_reichsanzeiger_worker(query_terms, session, news_page_collection):
@@ -137,7 +137,7 @@ async def query_reichsanzeiger_worker(query_terms, session, news_page_collection
             current_url = result['url']
             news_page_collection.handle_entry(current_url, query_term)
     except (KeyError, UnboundLocalError) as e:
-        logger.warning(f'No result in query from url: {url}...: \n {result}')
+        logger.warning(f'No result in query from url: {url}')
 
 
 async def main(query_terms, news_page_collection):
