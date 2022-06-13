@@ -27,7 +27,7 @@ This Repository is the Backend of our project, providing a flask application tha
     ```
 2. 
     ```
-    python3 -m flask run
+    FLASK_DEBUG=0 python3 -m flask run
     ```
 
 # Deprercated Below
