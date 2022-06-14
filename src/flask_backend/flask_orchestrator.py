@@ -23,7 +23,7 @@ def start_workflow():
     #os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
     global file
     global queryOptions
-    nodes, edges, options = main_for_flask(image=file)
+    nodes, edges, options = main_for_flask(image=file, gnd=queryOptions['gnd'])
 
     return jsonify({
         'success': True,
@@ -51,6 +51,7 @@ def upload_image():
         'file': 'Received'
     })
 
+
 @app.route('/api/uploadDate', methods=['POST'])
 def upload_Date():
     global queryOptions
@@ -60,6 +61,7 @@ def upload_Date():
         'success': True,
         'date': queryOptions['date']
     })
+
 
 @app.route('/api/uploadGnd', methods=['POST'])
 def upload_Gnd():

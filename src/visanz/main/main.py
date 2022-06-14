@@ -112,7 +112,7 @@ def main(args: argparse, return_graph=False, image=None):
         webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
 
 
-def main_for_flask(image, gnd: bool = True):
+def main_for_flask(image, gnd: bool = True, year=None):
     logger.info(f'main_for_flask got image of type {type(image)}')
     args = SimpleNamespace(cache=False, parallel=True,
                            sample=30, keyvis=True, gnd=gnd, file=None)
