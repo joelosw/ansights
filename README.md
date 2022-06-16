@@ -31,7 +31,7 @@ This Repository is the Backend of our project, providing a flask application tha
     ```
 
 
-# Build an Run as Docker Container
+## Build an Run as Docker Container
 Currently only a one-container setup is working:
 
 1. 
