@@ -38,7 +38,7 @@ jobs:
         target: final
         push: true
         tags: |
-          ghcr.io/joelosw/visualanzeights:$(date +%s)
+          ghcr.io/joelosw/visualanzeights:latest
         build-args: |
           ENVIRONMENT=production
 
