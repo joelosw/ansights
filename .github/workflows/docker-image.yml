@@ -37,8 +37,8 @@ jobs:
       env:
         REGISTRY: ghcr.io
       run: |
-        docker build --tag $REGISTRY/${REPO}:latest .
-        docker push $REGISTRY/${REPO}:latest
+        docker build -t $REGISTRY/${REPO}:latest -t $REGISTRY/${REPO}:$(date +%s) .
+        docker push $REGISTRY/${REPO} --all-tags
       
 
 
