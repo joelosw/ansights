@@ -30,6 +30,19 @@ This Repository is the Backend of our project, providing a flask application tha
     FLASK_DEBUG=0 python3 -m flask run
     ```
 
+
+# Build an Run as Docker Container
+Currently only a one-container setup is working:
+
+1. 
+```
+docker build --tag anseights .
+```
+2. 
+```
+docker run --rm -p 80:3000 anseights
+```
+
 # Deprercated Below
 ## Get the SQL Database:
 1. Install MariaDB \[[Windows](https://www.mariadbtutorial.com/getting-started/install-mariadb/) | [Arch](https://wiki.archlinux.org/title/MariaDB)\]
