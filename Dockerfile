@@ -2,7 +2,7 @@
 FROM node:18-alpine as build-step
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-COPY AppVisualAnzeights/package.json AppVisualAnzeights/package-lock.json ./
+COPY AppVisualAnzeights/package.json ./
 COPY AppVisualAnzeights/src ./src
 COPY AppVisualAnzeights/public ./public
 RUN npm install
