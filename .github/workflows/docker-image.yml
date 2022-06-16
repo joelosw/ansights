@@ -27,19 +27,19 @@ jobs:
         username: $GITHUB_USER
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
-        env:
-          REGISTRY: ghcr.io
-          IMAGE_NAME: ${{ github.repository }}
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          target: final
-          push: true
-          tags: |
-            $REGISTRY/$OWNER/$IMAGE_NAME:$(date +%s)
-          build-args: |
-            ENVIRONMENT=production
+      env:
+        REGISTRY: ghcr.io
+        IMAGE_NAME: ${{ github.repository }}
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        target: final
+        push: true
+        tags: |
+          $REGISTRY/$OWNER/$IMAGE_NAME:$(date +%s)
+        build-args: |
+          ENVIRONMENT=production
 
 
         
