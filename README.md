@@ -32,6 +32,8 @@ This Repository is the Backend of our project, providing a flask application tha
 
 
 ## Build an Run as Docker Container
+The latest docker image should be available to the right, under [packages](https://github.com/joelosw?tab=packages&repo_name=VisualAnzeights). Alternatively you can build it yourself:
+
 Currently only a one-container setup is working:
 
 1. 
