@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run:  |
+            echo $CR_PAT | docker login ghcr.io -u joelosw --password-stdin
+            docker build . --tag ghcr.io/jonashackt/hello-world:latest
+            docker run ghcr.io/joelosw/visualanzeighhts:latest
+            docker push ghcr.io/joelosw/visualanzeights:latest
+      env:
+        CR_PAT: ${{ secrets.CR_PAT }}
+
+        
