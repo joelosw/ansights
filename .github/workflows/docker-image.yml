@@ -38,7 +38,7 @@ jobs:
         target: final
         push: true
         tags: |
-          $REGISTRY/$OWNER/$IMAGE_NAME:$(date +%s)
+          ghcr.io/joelosw/visualanzeights:$(date +%s)
         build-args: |
           ENVIRONMENT=production
 
