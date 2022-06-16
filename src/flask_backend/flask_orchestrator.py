@@ -9,7 +9,8 @@ from flask import Flask, request, render_template, jsonify
 sys.path.append('./')
 sys.path.append('./../../')
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../../AppVisualAnzeights/build',
+            static_url_path='/')
 
 img_file = None
 npimg = None
@@ -74,9 +75,9 @@ def upload_Gnd():
     })
 
 
-@app.route("/")
+@app.route('/')
 def index():
-    return render_template('../../AppVisualAnzeights/public/index.html')
+    return app.send_static_file('index.html')
 
 
 if __name__ == "__main__":
