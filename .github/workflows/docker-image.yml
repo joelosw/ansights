@@ -32,7 +32,7 @@ jobs:
     - name: Build the Docker image
       env:
         REGISTRY: ghcr.io
-        IMAGE_NAME: ${{ REPO }}
+        IMAGE_NAME: ${REPO}
         OWNER: joelosw
       run: |
         docker build --tag $REGISTRY/$OWNER/$IMAGE_NAME:latest .
