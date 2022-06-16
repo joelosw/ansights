@@ -36,10 +36,9 @@ jobs:
     - name: Build and Push
       env:
         REGISTRY: ghcr.io
-        OWNER: joelosw
       run: |
-        docker build --tag $REGISTRY/$OWNER/${REPO}:latest .
-        docker push $REGISTRY/$OWNER/${REPO}:latest
+        docker build --tag $REGISTRY/${REPO}:latest .
+        docker push $REGISTRY/${REPO}:latest
       
 
 
