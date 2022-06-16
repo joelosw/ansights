@@ -17,6 +17,8 @@ jobs:
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v3
+      with:
+        submodules: recursive
     - name: Login to GitHub Container registry
       uses: docker/login-action@v1
       env:
