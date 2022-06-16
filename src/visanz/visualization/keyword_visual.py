@@ -99,7 +99,7 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
                     title=',\n'.join(
                     tuple(common_words)),
                     weight=weight,
-                    value=value,
+                    value=value*0.5,
                     length=length
                 )
 
