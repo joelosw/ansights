@@ -37,7 +37,7 @@ jobs:
         OWNER: joelosw
       run: |
         docker build --tag $REGISTRY/$OWNER/${REPO}:latest .
-        docker push $REGISTRY/$OWNER/$IMAGE_NAME:latest
+        docker push $REGISTRY/$OWNER/${REPO}:latest
       
 
 
