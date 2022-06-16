@@ -30,6 +30,7 @@ jobs:
       env:
         REGISTRY: ghcr.io
         IMAGE_NAME: ${{ github.repository }}
+        OWNER: joelosw
       uses: docker/build-push-action@v2
       with:
         context: .
