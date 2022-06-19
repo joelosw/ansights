@@ -126,6 +126,9 @@ def generate_graph_content(network):
     print(nodes)
     print(edges)
     print(options)
+    data_dict = dict(nodes= nodes, edges= edges, options= options)
+    with open("graph.json", "w") as outfile:
+        json.dump(data_dict, outfile)
     return nodes, edges, options
 
 
