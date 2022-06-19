@@ -99,7 +99,7 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
                     title=',\n'.join(
                     tuple(common_words)),
                     weight=weight,
-                    value=value,
+                    value=value/(1+len(news_pages)**2//1000),
                     length=length
                 )
 
@@ -126,6 +126,9 @@ def generate_graph_content(network):
     print(nodes)
     print(edges)
     print(options)
+    data_dict = dict(nodes= nodes, edges= edges, options= options)
+    with open("graph.json", "w") as outfile:
+        json.dump(data_dict, outfile)
     return nodes, edges, options
 
 
