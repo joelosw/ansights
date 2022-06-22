@@ -1,9 +1,13 @@
 [Description of the Dataset on the Coding daVinci Website](https://codingdavinci.de/daten/deutscher-reichsanzeiger-und-preussischer-staatsanzeiger)
 
-# Visual Anzeights
+# Visual Ansights
 Welcome to our Coding daVinci repository. Please don't judge us on the current state of the Code.
 We  know it is very messy and not well documented, but we are working on that.
 This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](https://github.com/SimeonAllmendinger/AppVisualAnzeights)
+
+### Partner Project
+Also visit the Partner Project, which creates a Knowledge Graph with sparql-endpoint:
+[flyer-explorer](https://github.com/ISE-FIZKarlsruhe/flyer-explorer)
 
 ## Setup The Repo
 1. Clone this repo
@@ -30,8 +34,23 @@ This Repository is the Backend of our project, providing a flask application tha
     FLASK_DEBUG=0 python3 -m flask run
     ```
 
+## Runt the WebApp (in develop mode, not production)
+1. 
+    ```
+    cd AppVisualAnzeights
+    ```
+2. 
+    ```
+    npm install
+    ```
+3. 
+    ```
+    npm run
+    ```
+    
 
-## Build an Run as Docker Container
+# Dockerized Build
+## Build an Run your the Docker Container
 The latest docker image should be available to the right, under [packages](https://github.com/joelosw?tab=packages&repo_name=VisualAnzeights). Alternatively you can build it yourself:
 
 Currently only a one-container setup is working:
