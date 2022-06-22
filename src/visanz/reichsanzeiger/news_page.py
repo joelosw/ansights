@@ -1,9 +1,13 @@
 import requests
 import html2text
-
+from datetime import datetime
+from bs4 import BeautifulSoup, SoupStrainer
+if True:
+    from utils.logger import get_logger
+logger = get_logger('FESS')
 
 class News_Page:
-    def __init__(self, url, init_keywords=None):
+    def __init__(self, url, init_keywords=None, timestamp=None):
         self.url: str = url
         self.keywords: set = set()
         if isinstance(init_keywords, str):
@@ -12,6 +16,7 @@ class News_Page:
             init_keywords = init_keywords
         self.keywords.update(init_keywords)
         self.name = '-'.join(self.url.split('/')[-3:])
+        self.timestamp = timestamp
 
     def add_keywords(self, additional_keywords):
         self.keywords.update(additional_keywords)
@@ -25,7 +30,22 @@ class News_Page:
 
     @property
     def date(self):
-        pass
+        if not self.timestamp:
+            return ''
+        date = datetime.strptime(
+            self.timestamp, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+        return datetime.strftime(date, '%b %Y')
+
+    @property
+    def scan_url(self):
+        data = requests.get(self.url).content
+        soup = BeautifulSoup(data, 'html.parser')
+        link = soup.a
+        if link:
+            return 'https://digi.bib.uni-mannheim.de' + link.get('href')
+        else:
+            logger.warning('Could not find scan for url {}'.format(self.url))
+            return self.url
 
     def __eq__(self, other):
         other.url == self.url

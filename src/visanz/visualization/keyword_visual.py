@@ -69,13 +69,13 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image', fixed=True,
                  image='file://' + os.path.join(repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', 'example_flyer.jpg'))
     for i, page in enumerate(news_pages):
-        kwargs = dict(label=page.name.split('-')[-1],
+        kwargs = dict(label=page.date,
                       title=page.name + '\n Keywords: \n' +
                       '\n'.join(page.keywords),
                       shape='image',
                       image=random.choice(scan_paths),
                       color=f'rgba{tuple(colors[i,:])+(0.7,)}',
-                      url=page.url,)
+                      url=page.scan_url)
         net.add_node(i, size=10*len(page.keywords),
                      **kwargs)
 
@@ -123,10 +123,7 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
 
 def generate_graph_content(network):
     nodes, edges, _, _, _, options = network.get_network_data()
-    print(nodes)
-    print(edges)
-    print(options)
-    data_dict = dict(nodes= nodes, edges= edges, options= options)
+    data_dict = dict(nodes=nodes, edges=edges, options=options)
     with open("graph.json", "w") as outfile:
         json.dump(data_dict, outfile)
     return nodes, edges, options
