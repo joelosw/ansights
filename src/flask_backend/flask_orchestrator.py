@@ -24,8 +24,9 @@ def start_workflow():
     #os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
     global file
     global queryOptions
+    print(f'#####DATE: {queryOptions["date"]}')
     nodes, edges, options = main_for_flask(image=file, gnd=queryOptions['gnd'])
-
+    print(f'#####DATE: {queryOptions["date"]}')
     return jsonify({
         'success': True,
         'nodes': nodes,

@@ -66,7 +66,8 @@ class NewsPageCollection():
                 keywords)
         self.lock.acquire()
         try:
-            self.collection[url] = News_Page(url, keywords, timestamp)
+            self.collection[url] = News_Page(
+                url, keywords, timestamp)
         except KeyError:
             self.collection[url].add_keywords(keywords)
         self.lock.release()
@@ -106,7 +107,8 @@ async def query_reichsanzeiger_asnyc(query_term, session, news_page_collection):
     try:
         for result in result_json['response']['result']:
             current_url = result['url']
-            news_page_collection.handle_entry(current_url, query_term, result['timestamp'])
+            news_page_collection.handle_entry(
+                current_url, query_term, result['timestamp'])
     except (KeyError, UnboundLocalError) as e:
         logger.warning(f'No result in query from url: {url}')
 

@@ -113,7 +113,8 @@ def main(args: argparse, return_graph=False, image=None):
 
 
 def main_for_flask(image, gnd: bool = True, year=None):
-    logger.info(f'main_for_flask got image of type {type(image)}')
+    logger.info(
+        f'main_for_flask got image of type {type(image)} wit gnd={gnd}')
     args = SimpleNamespace(cache=False, parallel=True,
                            sample=30, keyvis=True, gnd=gnd, file=None)
     net = main(args, return_graph=True, image=image)
