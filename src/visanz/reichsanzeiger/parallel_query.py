@@ -60,13 +60,13 @@ class NewsPageCollection():
         self.lock = Lock()
         self.syn_helper = synonyms_iterator_helper
 
-    def handle_entry(self, url: str, keywords: set):
+    def handle_entry(self, url: str, keywords: set, timestamp=None):
         if self.syn_helper:
             keywords = self.syn_helper.get_multiple_motherwords(
                 keywords)
         self.lock.acquire()
         try:
-            self.collection[url] = News_Page(url, keywords)
+            self.collection[url] = News_Page(url, keywords, timestamp)
         except KeyError:
             self.collection[url].add_keywords(keywords)
         self.lock.release()
@@ -106,7 +106,7 @@ async def query_reichsanzeiger_asnyc(query_term, session, news_page_collection):
     try:
         for result in result_json['response']['result']:
             current_url = result['url']
-            news_page_collection.handle_entry(current_url, query_term)
+            news_page_collection.handle_entry(current_url, query_term, result['timestamp'])
     except (KeyError, UnboundLocalError) as e:
         logger.warning(f'No result in query from url: {url}')
 
@@ -135,7 +135,8 @@ async def query_reichsanzeiger_worker(query_terms, session, news_page_collection
     try:
         for result in result_json['response']['result']:
             current_url = result['url']
-            news_page_collection.handle_entry(current_url, query_term)
+            news_page_collection.handle_entry(
+                current_url, query_term, result['timestamp'])
     except (KeyError, UnboundLocalError) as e:
         logger.warning(f'No result in query from url: {url}')
 

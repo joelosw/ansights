@@ -69,7 +69,7 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image', fixed=True,
                  image='file://' + os.path.join(repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', 'example_flyer.jpg'))
     for i, page in enumerate(news_pages):
-        kwargs = dict(label=page.name.split('-')[-1],
+        kwargs = dict(label=page.date,
                       title=page.name + '\n Keywords: \n' +
                       '\n'.join(page.keywords),
                       shape='image',
