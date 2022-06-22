@@ -12,3 +12,4 @@ launch.json
 AppVisualAnzeights/node_modules
 node_modules
 visanz.egg-info
+graph.json

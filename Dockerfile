@@ -30,4 +30,4 @@ ENV FLASK_ENV production
 
 EXPOSE 3000
 WORKDIR /app/src/flask_backend
-CMD ["gunicorn", "-b", ":3000", "flask_orchestrator:app"]
+CMD ["gunicorn", "-b", ":3000","--timeout","240", "flask_orchestrator:app"]
