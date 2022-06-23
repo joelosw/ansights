@@ -14,7 +14,7 @@ app = Flask(__name__, static_folder='../../AppVisualAnzeights/build',
 
 img_file = None
 npimg = None
-queryOptions = {'gnd': False, 'date': None}
+queryOptions = {'gnd': False, 'date': None, 'dateRange': None, 'complexity': None}
 
 
 @app.route('/api/startWorkflow', methods=['GET', 'POST'])
@@ -52,6 +52,16 @@ def upload_image():
         'success': True,
         'file': 'Received'
     })
+    
+@app.route('/api/uploadMessage', methods=['POST'])
+def upload_message():
+    message = request.get_json(force=True)['message']
+    print(message)
+
+    return jsonify({
+        'success': True,
+        'text': 'Received'
+    })
 
 
 @app.route('/api/uploadDate', methods=['POST'])
@@ -62,6 +72,26 @@ def upload_Date():
     return jsonify({
         'success': True,
         'date': queryOptions['date']
+    })
+
+@app.route('/api/uploadDateRange', methods=['POST'])
+def upload_DateRange():
+    global queryOptions
+    queryOptions['dateRange'] = request.get_json(force=True)['dateRange']
+
+    return jsonify({
+        'success': True,
+        'dateRange': queryOptions['dateRange']
+    })
+
+@app.route('/api/uploadComplexity', methods=['POST'])
+def upload_Complexity():
+    global queryOptions
+    queryOptions['complexity'] = request.get_json(force=True)['complexity']
+
+    return jsonify({
+        'success': True,
+        'complexity': queryOptions['complexity']
     })
 
 
