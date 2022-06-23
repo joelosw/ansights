@@ -80,7 +80,7 @@ def parallel_query(query_terms: list, num_workers: int = None, synonyms_helper: 
             query_terms, news_page_collection, num_workers))
     else:
         asyncio.run(main(query_terms, news_page_collection))
-    logger.info(
+    logger.debug(
         f'Parallel query finished with result: {news_page_collection.collection}')
     return news_page_collection.collection
 

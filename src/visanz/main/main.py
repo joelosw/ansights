@@ -6,6 +6,7 @@ import time
 import logging
 from types import SimpleNamespace
 import sys
+from datetime import date
 
 sys.path.append('./')
 sys.path.append('./..')
@@ -24,7 +25,11 @@ if True:
 
 
 logger = get_logger('MAIN')
-get_logger('ASYNC').setLevel(logging.DEBUG)
+get_logger('ASYNC').setLevel(logging.INFO)
+get_logger('KEY_VIS').setLevel(logging.INFO)
+get_logger('REL').setLevel(logging.INFO)
+get_logger('FESS').setLevel(logging.INFO)
+get_logger('OCR').setLevel(logging.INFO)
 TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 HTML_PATH = os.path.join(
     repo_path, 'src/visanz/visualization/VisualAnzeights.html')
@@ -42,7 +47,7 @@ def main(args: argparse, return_graph=False, image=None):
         logger.info(f'Extracted Keywords: {keywords}')
 
         if args.gnd:
-            keywords_extended = df_to_dict(get_gnd_keywordRelations(keywords=keywords, max_query_items=30, print_output=False, verbose=False,
+            keywords_extended = df_to_dict(get_gnd_keywordRelations(keywords=keywords, max_query_items=5, print_output=False, verbose=False,
                                                                     max_keyword_relations=1))
             logger.info(f'GND-Extended Keywords: {keywords_extended}')
             if args.parallel:
@@ -82,27 +87,20 @@ def main(args: argparse, return_graph=False, image=None):
         with open('relations-cache.pkl', 'rb') as f:
             relations = pickle.load(f)
             logger.info(f'Loaded cached relations: {relations}')
-    if not args.keyvis:
-        vis_relations = {}
-        vis_relations['id'] = []
-        vis_relations['name'] = []
-        vis_relations['context'] = []
-        vis_relations['url'] = []
-        vis_relations['keyword'] = []
+    logger.info(f'Got {len(relations)} relations')
+    year_l, year_h = tuple(
+        args.dateRange) if args.dateRange else (1800, 1950)
+    lower = date(
+        year=year_l, month=1, day=1)
+    upper = date(
+        year=year_h, month=12, day=31)
+    for article in relations:
+        if not (lower <= article.date <= upper):
+            relations.remove(article)
+    logger.info(
+        f'Filtered for years {lower} - {upper}: {len(relations)} relations')
 
-        for i, value in enumerate(relations):
-            vis_relations['id'].append(i)
-            # TODO Heading aus der url rauslesen
-            vis_relations['name'].append(' '.join(value.url.split('/')[-3:]))
-            vis_relations['context'].append(value.context())
-            vis_relations['url'].append(value.url)
-            vis_relations['keyword'].append(next(iter(value.keywords)))
-
-        data_keywords = ['test', 'test', 'test']
-        net = VisAnz_Net(data_dict=vis_relations,
-                         data_keywords=data_keywords)
-    else:
-        net = create_graph(relations, color_keywords=True)
+    net = create_graph(relations, color_keywords=True)
 
     if return_graph:
         return net
@@ -112,11 +110,11 @@ def main(args: argparse, return_graph=False, image=None):
         webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
 
 
-def main_for_flask(image, gnd: bool = True, year=None):
+def main_for_flask(image, **kwargs):
     logger.info(
-        f'main_for_flask got image of type {type(image)} wit gnd={gnd}')
+        f'main_for_flask got image of type {type(image)} wit kwargs={kwargs}')
     args = SimpleNamespace(cache=False, parallel=True,
-                           sample=30, keyvis=True, gnd=gnd, file=None)
+                           sample=kwargs['complexity'], keyvis=True, gnd=kwargs['gnd'], dateRange=kwargs['dateRange'])
     net = main(args, return_graph=True, image=image)
     nodes, edges, options = generate_graph_content(net)
     logger.info(

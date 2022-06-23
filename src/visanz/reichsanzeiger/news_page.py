@@ -6,6 +6,7 @@ if True:
     from utils.logger import get_logger
 logger = get_logger('FESS')
 
+
 class News_Page:
     def __init__(self, url, init_keywords=None, timestamp=None):
         self.url: str = url
@@ -34,7 +35,7 @@ class News_Page:
             return ''
         date = datetime.strptime(
             self.timestamp, '%Y-%m-%dT%H:%M:%S.%fZ').date()
-        return datetime.strftime(date, '%b %Y')
+        return date
 
     @property
     def scan_url(self):

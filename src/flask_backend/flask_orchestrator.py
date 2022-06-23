@@ -14,7 +14,8 @@ app = Flask(__name__, static_folder='../../AppVisualAnzeights/build',
 
 img_file = None
 npimg = None
-queryOptions = {'gnd': False, 'date': None, 'dateRange': None, 'complexity': None}
+queryOptions = {'gnd': False,
+                'dateRange': None, 'complexity': None}
 
 
 @app.route('/api/startWorkflow', methods=['GET', 'POST'])
@@ -24,9 +25,7 @@ def start_workflow():
     #os.system('{} {}'.format('python3', '../00_MAIN/main.py'))
     global file
     global queryOptions
-    print(f'#####DATE: {queryOptions["date"]}')
-    nodes, edges, options = main_for_flask(image=file, gnd=queryOptions['gnd'])
-    print(f'#####DATE: {queryOptions["date"]}')
+    nodes, edges, options = main_for_flask(image=file, **queryOptions)
     return jsonify({
         'success': True,
         'nodes': nodes,
@@ -52,7 +51,8 @@ def upload_image():
         'success': True,
         'file': 'Received'
     })
-    
+
+
 @app.route('/api/uploadMessage', methods=['POST'])
 def upload_message():
     message = request.get_json(force=True)['message']
@@ -64,16 +64,6 @@ def upload_message():
     })
 
 
-@app.route('/api/uploadDate', methods=['POST'])
-def upload_Date():
-    global queryOptions
-    queryOptions['date'] = request.get_json(force=True)['date']
-
-    return jsonify({
-        'success': True,
-        'date': queryOptions['date']
-    })
-
 @app.route('/api/uploadDateRange', methods=['POST'])
 def upload_DateRange():
     global queryOptions
@@ -83,6 +73,7 @@ def upload_DateRange():
         'success': True,
         'dateRange': queryOptions['dateRange']
     })
+
 
 @app.route('/api/uploadComplexity', methods=['POST'])
 def upload_Complexity():

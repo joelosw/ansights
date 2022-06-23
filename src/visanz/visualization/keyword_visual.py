@@ -8,7 +8,7 @@ import random
 from sklearn.manifold import MDS
 from sklearn.preprocessing import MinMaxScaler
 from bs4 import BeautifulSoup
-import re
+from datetime import datetime
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
@@ -48,7 +48,7 @@ def calculate_colors(similarity_matrix):
     np.fill_diagonal(dissim, 0)
     embedding = MDS(n_components=3, dissimilarity='precomputed')
     scaler = MinMaxScaler()
-    print(f'Dissimilarities:\n {dissim}')
+    logger.debug(f'Dissimilarities:\n {dissim}')
     three_d = embedding.fit_transform(dissim)
     colors = (scaler.fit_transform(three_d)*255).astype(int)
     return colors
@@ -60,6 +60,7 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     jaccard.T[i_lower] = jaccard[i_lower]
     np.fill_diagonal(jaccard, 1)
     colors = calculate_colors(jaccard)
+    logger.info('Starting to create Network')
     net = Network(height='100%', width='75%')
     net.inherit_edge_colors(True)
     net.barnes_hut()
@@ -69,7 +70,7 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image', fixed=True,
                  image='file://' + os.path.join(repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', 'example_flyer.jpg'))
     for i, page in enumerate(news_pages):
-        kwargs = dict(label=page.date,
+        kwargs = dict(label=datetime.strftime(page.date, '%b %Y'),
                       title=page.name + '\n Keywords: \n' +
                       '\n'.join(page.keywords),
                       shape='image',
