@@ -9,6 +9,7 @@ from sklearn.manifold import MDS
 from sklearn.preprocessing import MinMaxScaler
 from bs4 import BeautifulSoup
 from datetime import datetime
+from tqdm import tqdm
 sys.path.append('./')
 sys.path.append('./../')
 sys.path.append('./../..')
@@ -69,7 +70,8 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
         repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', image) for image in scan_images]
     net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image', fixed=True,
                  image='file://' + os.path.join(repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', 'example_flyer.jpg'))
-    for i, page in enumerate(news_pages):
+    logger.info('Adding nodes to Graph')
+    for i, page in tqdm(enumerate(news_pages)):
         kwargs = dict(label=datetime.strftime(page.date, '%b %Y'),
                       title=page.name + '\n Keywords: \n' +
                       '\n'.join(page.keywords),
@@ -79,8 +81,8 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
                       url=page.scan_url)
         net.add_node(i, size=10*len(page.keywords),
                      **kwargs)
-
-    for i in range(len(news_pages)):
+    logger.info('Adding edges to Graph')
+    for i in tqdm(range(len(news_pages))):
         for j in range(i):
             #similarity = similarities[i, j]
             # net.add_edge(i, j, weight=dist, value=dist,

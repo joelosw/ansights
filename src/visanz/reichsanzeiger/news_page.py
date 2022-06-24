@@ -18,6 +18,7 @@ class News_Page:
         self.keywords.update(init_keywords)
         self.name = '-'.join(self.url.split('/')[-3:])
         self.timestamp = timestamp
+        self.date = self.generate_date()
 
     def add_keywords(self, additional_keywords):
         self.keywords.update(additional_keywords)
@@ -29,8 +30,7 @@ class News_Page:
         text = html2text.html2text(data.text)
         return text
 
-    @property
-    def date(self):
+    def generate_date(self):
         if not self.timestamp:
             return ''
         date = datetime.strptime(
