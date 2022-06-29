@@ -14,7 +14,8 @@ A Demo is currently hosted at [flyer-explorer.fiz-karlsruhe.de](https://flyer-ex
 Also visit the Partner Project, which creates a Knowledge Graph with sparql-endpoint:
 [flyer-explorer](https://github.com/ISE-FIZKarlsruhe/flyer-explorer)
 
-## Setup The Repo
+## Run Development setup
+### Setup the Repo
 1. Clone this repo
 2. 
     ```
@@ -29,7 +30,7 @@ Also visit the Partner Project, which creates a Knowledge Graph with sparql-endp
     ```
     python -m spacy download de_core_news_md
     ```
-## Runt the flask app
+### Run the flask app
 1. 
     ```
     cd src/flask_backend
@@ -39,7 +40,7 @@ Also visit the Partner Project, which creates a Knowledge Graph with sparql-endp
     FLASK_DEBUG=0 python3 -m flask run
     ```
 
-## Runt the WebApp (in develop mode, not production)
+### Run the WebApp (in develop mode, not production)
 1. 
     ```
     cd AppVisualAnzeights
@@ -67,30 +68,4 @@ docker build --tag anseights .
 2. 
 ```
 docker run --rm -p 80:3000 anseights
-```
-
-# Deprercated Below
-## Get the SQL Database:
-1. Install MariaDB \[[Windows](https://www.mariadbtutorial.com/getting-started/install-mariadb/) | [Arch](https://wiki.archlinux.org/title/MariaDB)\]
-
-### Using Linux:
-``` bash
-mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-sudo systemctl start mariadb.service
-sudo mysql -u root -p
-```
-Using the MariaDB CLI
-```
-CREATE DATABASE reichsanzeiger;
-``` 
-Then exit, go back to terminal and import data:
-``` bash
-sudo mysql -u root -p reichsanzeiger < Reichsanzeiger-Repo/reichsanzeiger.sql
-```
-2. Setting up a new user with password
-``` bash
-CREATE USER 'NAME'@'localhost' IDENTIFIED BY 'PASSWORD';
-GRANT ALL PRIVILEGES ON reichsanzeiger.* TO 'NAME'@'localhost';
-FLUSH PRIVILEGES;
-quit;
 ```
