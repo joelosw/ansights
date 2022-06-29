@@ -3,7 +3,7 @@
 # Ansights
 Welcome to our Coding daVinci repository. Please don't judge us on the current state of the Code.
 We  know it is very messy and not well documented, but we are working on that.
-This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](https://github.com/SimeonAllmendinger/AppVisualAnzeights).
+This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](https://github.com/SimeonAllmendinger/WebAppAnsights).
 A Demo is currently hosted at [flyer-explorer.fiz-karlsruhe.de](https://flyer-explorer.fiz-karlsruhe.de)
 
 
@@ -43,7 +43,7 @@ Also visit the Partner Project, which creates a Knowledge Graph with sparql-endp
 ### Run the WebApp (in develop mode, not production)
 1. 
     ```
-    cd AppVisualAnzeights
+    cd WebAppAnsights
     ```
 2. 
     ```

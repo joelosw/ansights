@@ -9,7 +9,7 @@ tesseract
 *.pkl
 *.html
 launch.json
-AppVisualAnzeights/node_modules
+WebAppAnsights/node_modules
 node_modules
 visanz.egg-info
 graph.json

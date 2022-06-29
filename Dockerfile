@@ -2,9 +2,9 @@
 FROM node:18-alpine as build-step
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-COPY AppVisualAnzeights/package.json ./
-COPY AppVisualAnzeights/src ./src
-COPY AppVisualAnzeights/public ./public
+COPY WebAppAnsights/package.json ./
+COPY WebAppAnsights/src ./src
+COPY WebAppAnsights/public ./public
 RUN npm install
 RUN npm install react-dropdown-date
 RUN npm run build
@@ -13,7 +13,7 @@ RUN npm run build
 FROM python:3.9
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6 tesseract-ocr -y
-WORKDIR /app/AppVisualAnzeights
+WORKDIR /app/WebAppAnsights
 COPY --from=build-step /app/build ./build
 
 WORKDIR /app

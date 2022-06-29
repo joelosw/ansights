@@ -67,9 +67,9 @@ def create_graph(news_pages, num_keywords=6, color_keywords=False):
     net.barnes_hut()
     scan_images = os.listdir(os.path.join(repo_path, 'data', 'scan_examples'))
     scan_paths = ['file://' + os.path.join(
-        repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', image) for image in scan_images]
+        repo_path, 'WebAppAnsights/src/assets/images/scan_examples', image) for image in scan_images]
     net.add_node('KEY', size=10*num_keywords, title='Flugblatt', label='Flugblatt', shape='image', fixed=True,
-                 image='file://' + os.path.join(repo_path, 'AppVisualAnzeights/src/assets/images/scan_examples', 'example_flyer.jpg'))
+                 image='file://' + os.path.join(repo_path, 'WebAppAnsights/src/assets/images/scan_examples', 'example_flyer.jpg'))
     logger.info('Adding nodes to Graph')
     for i, page in tqdm(enumerate(news_pages)):
         kwargs = dict(label=datetime.strftime(page.date, '%b %Y'),

@@ -9,7 +9,7 @@ from flask import Flask, request, render_template, jsonify
 sys.path.append('./')
 sys.path.append('./../../')
 
-app = Flask(__name__, static_folder='../../AppVisualAnzeights/build',
+app = Flask(__name__, static_folder='../../WebAppAnsights/build',
             static_url_path='/')
 
 img_file = None
