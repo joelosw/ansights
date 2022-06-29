@@ -3,8 +3,8 @@
 # Ansights
 Welcome to our Coding daVinci repository. Please don't judge us on the current state of the Code.
 We  know it is very messy and not well documented, but we are working on that.
-This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](https://github.com/SimeonAllmendinger/AppVisualAnzeights)
-A Demo is currently hosted at [flyer-explorer.fiz-karlsruhe.de](flyer-explorer.fiz-karlsruhe.de)
+This Repository is the Backend of our project, providing a flask application that is called by out [ReactApp](https://github.com/SimeonAllmendinger/AppVisualAnzeights).
+A Demo is currently hosted at [flyer-explorer.fiz-karlsruhe.de](https://flyer-explorer.fiz-karlsruhe.de)
 
 
 ![](data/animated_graph.gif)
