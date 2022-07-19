@@ -20,7 +20,29 @@ logger = get_logger('REL')
 # First step, binary search at how many keywords we get results (presumably none if we throw in all keywords, and too many if we throw in 1 kw)
 
 
-def binary_search_number_of_keywords(all_keywords: list, lowest=1, highest=None, highest_found=None):
+def binary_search_number_of_keywords(all_keywords: list, lowest=1, highest=None, highest_found=None) -> int:
+    """
+    The function uses recursive binary search to find the optimal number of keywords, i.e., 
+    it searches for the smallest possible number that still gives more than one result per keyword.
+
+    Parameters
+    ----------
+        all_keywords:list
+            Search for the number of keywords that gives a result with one article
+        lowest=1
+            Make sure the function doesn't return 0
+        highest=None
+            Make sure that the function will search for a number of keywords between lowest and highest
+        highest_found=None
+            Keep track of the highest value that has been found so far
+
+    Returns
+    -------
+
+        The number of keywords that returns enough articles
+
+    """
+
     if highest is None:
         highest = len(all_keywords)
     logger.debug(
@@ -51,6 +73,23 @@ def binary_search_number_of_keywords(all_keywords: list, lowest=1, highest=None,
 
 
 def build_relations_async(all_keywords: list, sample=None):
+    """
+    The build_relations_async function takes a list of keywords and returns a list with unique instances of NewsPage.
+    This is done asynchronously with multiple threads
+
+    Parameters
+    ----------
+        all_keywords:list
+            Create the combinations of keywords that are used to query the news api
+        sample=None
+            Specify the number of combinations to be used
+
+    Returns
+    -------
+
+        A list with NewsPages
+
+    """
     number_with_results = binary_search_number_of_keywords(all_keywords)
     if sample is None:
         combs = list(combinations(all_keywords, number_with_results))
@@ -67,6 +106,22 @@ def build_relations_async(all_keywords: list, sample=None):
 
 
 def build_relations(all_keywords: list):
+    """
+    The build_relations_async function takes a list of keywords and returns a list with unique instances of NewsPage.
+
+    Parameters
+    ----------
+        all_keywords:list
+            Create the combinations of keywords that are used to query the news api
+        sample=None
+            Specify the number of combinations to be used
+
+    Returns
+    -------
+
+        A list with NewsPages
+
+    """
     number_with_results = binary_search_number_of_keywords(all_keywords)
     news_page = dict()
     combs = combinations(all_keywords, number_with_results)
@@ -95,6 +150,22 @@ def get_main_words(keywords_dict):
 
 
 def build_relations_with_synonyms(keywords_dict: dict):
+    """
+    The build_relations_with_synonyms function takes a dictionary of keywords and synonyms as input.
+    It then queries the reichsanzeiger search engine for each keyword and its synonyms,
+    and stores the results in a News_Page object. The function returns a list with all News_Pages.
+
+    Parameters
+    ----------
+        keywords_dict:dict
+            Get the keywords to search for
+
+    Returns
+    -------
+
+        A dictionary with the url as key and a news_page object as value
+    """
+
     number_with_results = binary_search_number_of_keywords(
         get_main_words(keywords_dict))
     news_page = dict()
@@ -122,6 +193,21 @@ def build_relations_with_synonyms(keywords_dict: dict):
 
 
 def build_relations_with_synonyms_async(keywords_dict: dict, num_workers: int = 10, sample: int = None):
+    """
+    The build_relations_with_synonyms function takes a dictionary of keywords and synonyms as input.
+    It then queries the reichsanzeiger search engine for each keyword and its synonyms,
+    and stores the results in a News_Page object. The function returns a list with all News_Pages.
+    This is done asynchronously.
+
+    Parameters
+    ----------
+        keywords_dict:dict
+            Get the keywords to search for
+
+    Returns
+    -------
+        A dictionary with the url as key and a news_page object as value
+    """
     # number_with_results = binary_search_number_of_keywords(
     #     get_main_words(keywords_dict))
     number_with_results = 3
