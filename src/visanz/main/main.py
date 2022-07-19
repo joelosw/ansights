@@ -1,3 +1,7 @@
+#! python3
+"""
+Main Files that includes different main functions depending on where it is called from
+"""
 import os
 import argparse
 import pickle
@@ -7,7 +11,8 @@ import logging
 from types import SimpleNamespace
 import sys
 from datetime import date
-
+from typing import Optional, Union, Any
+from PIL import Image
 sys.path.append('./')
 sys.path.append('./..')
 sys.path.append('./../..')
@@ -23,7 +28,7 @@ if True:
     from src.visanz.utils.__RepoPath__ import repo_path
     from src.visanz.visualization.keyword_visual import create_graph, generate_graph_content
 
-
+# Set logging levels of single loggers as  wished
 logger = get_logger('MAIN')
 get_logger('ASYNC').setLevel(logging.INFO)
 get_logger('KEY_VIS').setLevel(logging.INFO)
@@ -35,7 +40,24 @@ HTML_PATH = os.path.join(
     repo_path, 'src/visanz/visualization/VisualAnzeights.html')
 
 
-def main(args: argparse, return_graph=False, image=None):
+def main(args: argparse, return_graph: bool = False, image: Union[Image, str] = None) -> Union[Any, None]:
+    """
+    Primary main method that runs each step one by one and passes the results to the next steps
+
+    Parameters
+    ----------
+    args : argparse
+        all thhe necessary arguments in a namespace, such as DateRange, Complexity, ...
+    return_graph : bool, optional
+        wether to return the generated graph, by default False
+    image : Union[Image, str], optional
+        Image to process, either PIL or Path, by default None
+
+    Returns
+    -------
+    Union[Any, None]
+        either returns the Graph or nothing
+    """
     if not args.cache:
         if image is None or isinstance(image, str):
             ocr_text = get_string(args.file, lang='deu_frak')
@@ -110,7 +132,19 @@ def main(args: argparse, return_graph=False, image=None):
         webbrowser.open('file://' + HTML_PATH, new=0, autoraise=True)
 
 
-def main_for_flask(image, **kwargs):
+def main_for_flask(image: Union[Image, str], **kwargs) -> tuple:
+    """
+    Wrapper  for  main method that can be called by th flask app.
+
+    Parameters
+    ----------
+    image : Union[Image, str]
+
+    Returns
+    -------
+    tuple
+        nodes, edges, options for vis.js
+    """
     logger.info(
         f'main_for_flask got image of type {type(image)} wit kwargs={kwargs}')
     args = SimpleNamespace(cache=False, parallel=True,
