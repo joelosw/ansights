@@ -18,8 +18,21 @@ TEST_PATH = os.path.join(repo_path, 'data/2013_0473_023__ansicht01.tif')
 tessdata_dir_config = r'--tessdata-dir "{}/data/tessdata"'.format(repo_path)
 
 
-def get_string(IMAGE_PATH, lang='deu_frak'):
-    # Simple image to string
+def get_string(IMAGE_PATH: str, lang: str = 'deu_frak') -> str:
+    """Simple Image to text wrapper.
+
+    Parameters
+    ----------
+    IMAGE_PATH : str
+
+    lang : str, optional
+         by default 'deu_frak':str
+
+    Returns
+    -------
+    str
+        Extracted text
+    """
     text = pytesseract.image_to_string(
         Image.open(IMAGE_PATH), lang=lang, config=tessdata_dir_config)
 
@@ -28,8 +41,23 @@ def get_string(IMAGE_PATH, lang='deu_frak'):
     return text
 
 
-def get_string_from_image(image, lang='deu_frak'):
-    # Simple image to string
+def get_string_from_image(image: Image, lang: str = 'deu_frak') -> str:
+    """
+    Simple IMage to text wrapper.
+
+    Parameters
+    ----------
+    image : Image
+            in PIL format
+
+    lang : str, optional
+            by default 'deu_frak':str
+
+    Returns
+    -------
+    str
+        Extracted text
+    """
     text = pytesseract.image_to_string(
         image, lang=lang, config=tessdata_dir_config)
 
@@ -43,18 +71,32 @@ def init_SpellChecker():
     return spell
 
 
-def enhance_text(spell, text_cleaned, debug=False):
+def enhance_text(spell: SpellChecker, text_cleaned: str) -> str:
+    """
+    CLean the text a little. Does not work so great unfortunately.
+
+    Parameters
+    ----------
+    spell : SpellChecker
+        TO check wether word is spelled correct
+    text_cleaned : str
+        text that is to be checked
+
+    Returns
+    -------
+    str
+        processed text
+    """
     text_preprrocessed = ''
 
     for word in text_cleaned.split():
-        if debug:
-            logger.debug(word)
+
+        logger.debug(word)
 
         # find those words that may be misspelled
         if spell.unknown([word]) != set():
 
-            if debug:
-                logger.debug(spell.candidates(word))
+            logger.debug(spell.candidates(word))
 
             word_variant = word.replace("f", "s")
             word_variant = word_variant.replace("F", "S")
@@ -70,7 +112,22 @@ def enhance_text(spell, text_cleaned, debug=False):
     return text_preprrocessed
 
 
-def get_text_dict(languages=['deu_frak'], IMAGE_PATH=TEST_PATH):
+def get_text_dict(languages: list = ['deu_frak'], IMAGE_PATH: str = TEST_PATH) -> dict:
+    """Run the OCR Pipeline for several language models. 
+    Mainly for comparison and testinf
+
+    Parameters
+    ----------
+    languages : list, optional
+        by default ['deu_frak']
+    IMAGE_PATH : str, optional
+        where the image is stored, by default TEST_PATH
+
+    Returns
+    -------
+    dict
+        Dictionary with text entries for every language model
+    """
     text_strings = {}
     for lang in languages:
         logger.debug(f'===== LANGUAGE: {lang} =========')
