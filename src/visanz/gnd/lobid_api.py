@@ -63,7 +63,7 @@ def get_gnd_keywordRelations(keywords: list, max_query_items=10, print_output=Tr
                                         'variantName']):
     """
     The get_gnd_keywordRelations function accepts keywords and keys as arguments and 
-    returns the corrresponding output of the gnd for each keyword given a particular key in 
+    returns the corresponding output of the gnd for each keyword given a particular key in 
     a pandas dataframe. It 
 
     Parameters
