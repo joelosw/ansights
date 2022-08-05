@@ -15,15 +15,29 @@ nlp = spacy.load("de_core_news_md")
 def get_gnd_json(query: str, lobid_server='https://lobid.org/', catalog='gnd/search',
                  filter='+(type:SubjectHeading)', verbose=False):
     """
-        The get_gnd_json function accepts a query, URL components and filters as arguments and 
-        returns the json file of the data item at a particular URL.
+    The get_gnd_json function takes a query string and returns the JSON file from the GND-Lobid API.
+    The function takes two arguments:
+        - query (str): The search term to be used in the URL of the GND API.
+        - lobid_server (str): The base URL for accessing Lobid's APIs, defaults to https://lobid.org/.
+        - catalog (str): The name of Lobid's catalog, defaults to gnd/search.  This is not a complete list of all available catalogs but it should cover most use cases.
 
-        :param query:str: Used to pass the keywords of our search.
-        :param lobid_server='https://lobid.org/': Used to pass the base url of the page that is being scraped.
-        :param catalog='gnd/search': Used to pass the catalog of the page that is being scraped.
-        :param filter='+(type:SubjectHeading)': Used to add filters to our search.
-        :param verbose=False: Used to print out relevant information for debugging.
-        :return: A json.
+    Parameters
+    ----------
+        query:str
+            Specify the query string
+        lobid_server='https://lobid.org/'
+            Set the lobid server to query
+        catalog='gnd/search'
+            Specify the catalog to be searched
+        filter='+(type:SubjectHeading)'
+            Filter the results to only include subjectheading resources
+        verbose=False
+            Suppress the output of the get_gnd_json function
+
+    Returns
+    -------
+
+        A json file that contains the results of a query to the gnd-Api
     """
 
     base_url = lobid_server + catalog
@@ -48,18 +62,33 @@ def get_gnd_keywordRelations(keywords: list, max_query_items=10, print_output=Tr
                                         'preferredName', 'broaderTermInstantial', 'broaderTermGeneral',
                                         'variantName']):
     """
-        The get_gnd_keywordRelations function accepts keywords and keys as arguments and 
-        returns the corrresponding output of the gnd for each keyword given a particular key in 
-        a pandas dataframe.
+    The get_gnd_keywordRelations function accepts keywords and keys as arguments and 
+    returns the corresponding output of the gnd for each keyword given a particular key in 
+    a pandas dataframe. It 
 
-        :param keywords :list: Used to pass the keywords of our search in list.
-        :param json_keys==['relatedTerm', 'gndSubjectCategory', 'relatedPlaceOrGeographicName',
-                           'preferredName','broaderTermInstantial', 'broaderTermGeneral', 
-                           'variantName']: Used to pass the keys to scrape for linked terms.
-        :param max_items=10: Used to pass maximal number of items for each key.
-        :param print_output=True: Used to print the dataframe for each keyword.
-        :param verbose=False: Used to print out relevant information for debugging.
-        :return: A pandas DataFrame.
+    Parameters
+    ----------
+        keywords:list
+            Pass the keywords of the search in a list
+        max_query_items=10
+            Specify the maximum number of items to be returned for each keyword
+        print_output=True
+            Print the output of each keyword
+        verbose=True
+            Print out relevant information for debugging
+        as_list=True
+            Return the output as a list of lists
+        max_keyword_relations=3
+            Specify the number of related terms that are returned for each keyword
+        remove_duplicates=True
+            Remove duplicate terms from the list of related terms
+        json_keys: list
+            Decide which keys to use from lobid API
+
+    Returns
+    -------
+
+        A pandas dataframe
     """
 
     df = pd.DataFrame()
@@ -148,14 +177,23 @@ def get_gnd_keywordRelations(keywords: list, max_query_items=10, print_output=Tr
 
 def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_keyword_relations=3):
     """
-        The get_relevant_relations_as_list function accepts a dictionary with all related words and transforms 
-        it to a single set with the most partnered words.
+    The get_relevant_relations_as_list function accepts a dictionary with all related words and transforms 
+    it to a single set with the most common synonyms.
 
-        :param df :dict: Used to pass the dictionary for each keyword.
-        :param keyword: Used to pass keyword of our query.
-        :param max_keyword_relations=3: Used to define the maximal number of words of the outputted list.
-        :param verbose=False: Used to print out relevant information for debugging.
-        :return: A list.
+    Parameters
+    ----------
+        df:dict
+            Pass the dictionary for each keyword
+        keyword:str
+            Pass the keyword of our query
+        verbose=False
+            Print out relevant information for debugging
+        max_keyword_relations=3
+            Define the maximal number of words of the outputted list
+
+    Returns
+    -------
+        A list of the most relevant words for a given keyword
     """
 
     keyword_token = nlp(keyword)
@@ -192,6 +230,21 @@ def get_relevant_relations_as_list(df: dict, keyword: str, verbose=False, max_ke
 
 
 def df_to_dict(df):
+    """
+    The df_to_dict function converts a pandas dataframe to a dictionary.
+
+    Parameters
+    ----------
+        df
+            Specify the dataframe that is to be converted
+
+    Returns
+    -------
+
+        A dictionary where the keys are the column names and the values are lists of column values
+
+    """
+
     df_dict = {}
     for i in range(df.shape[1]):
         df_dict[df.columns[i]] = list(filter(None, df.iloc[0, i]))

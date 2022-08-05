@@ -14,6 +14,24 @@ ner_logger = get_logger('NER')
 
 
 def fuse(text: str, max_nouns: int = None, max_verbs: int = None):
+    """
+    The fuse function takes a string and returns a dictionary of the top
+    nouns, verbs, and proper nouns in that text. The number of each to return
+    is optional; if not specified, all are returned.
+
+    Parameters
+    ----------
+        text:str
+            Pass the text that should be processed
+        max_nouns:int=None
+            Specify the maximum number of nouns to be returned
+        max_verbs:int=None
+            Specify how many verbs to return
+
+    Returns
+    -------
+        A dictionary with the words and their scores
+    """
     scores = dict(extract_keyword_score(text))
     ner_logger.debug(f' Scores: {scores}')
     types = extract_nouns_and_verbs(text)
